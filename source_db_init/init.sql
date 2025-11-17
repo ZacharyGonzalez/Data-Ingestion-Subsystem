@@ -1,5 +1,8 @@
+DROP TABLE IF EXISTS healthcare;
+
 CREATE TABLE IF NOT EXISTS healthcare (
-    name VARCHAR(50) PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50),
     age SMALLINT,
     gender VARCHAR(10),
     blood_type VARCHAR(5),
