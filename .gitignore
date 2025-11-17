@@ -1,3 +1,8 @@
 .env
 logs
 __pycache__
+
+top_level.txt
+SOURCES.txt
+PKG-INFO
+dependency_links.txt

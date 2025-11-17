@@ -16,7 +16,7 @@ def standardize_bill(df) -> pd.DataFrame:
    
 def standardize_columns(df) -> pd.DataFrame:
     logger.info(f'Standardizing the column names.')
-    df.columns = df.columns.str.strip().str.lower().str.replace(' ','_')  
+    df.columns = df.columns.str.strip().str.lower().str.replace(' ','_')
     return df
 
 
