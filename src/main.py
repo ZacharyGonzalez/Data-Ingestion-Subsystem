@@ -18,7 +18,7 @@ logging.basicConfig(
 logger.info('Logger Initialization success.')
 
 def main():
-    df = read_csv(HEALTHCARE_CSV_PATH)
+    df = read_csv(HEALTHCARE_CSV_PATH) 
     df = drop_duplicates_or_na(df) 
     df = clean_data(df)
     df = validate_data(df)
