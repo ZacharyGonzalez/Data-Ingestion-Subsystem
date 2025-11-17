@@ -1,14 +1,14 @@
 import pandas as pd
 from pathlib import Path
+import logging
 
-def get_csv(path:str, logger) -> pd.DataFrame:
-    p = Path(path)
-    if not p.exists():
-        raise FileNotFoundError(path)
-    return pd.read_csv(p)
+logger = logging.getLogger(__name__)
 
-    
-def read_csv(logger, PATH):
+def read_csv(PATH) -> pd.DataFrame:
     logger.info(f'Reading healthcare data from {PATH}.')
-    df = get_csv(PATH, logger)
+    p = Path(PATH)
+    if not p.exists():
+        raise FileNotFoundError(PATH)
+    df = pd.read_csv(p)
+    logger.info(f'Successfully read healthcare data from {PATH}.')
     return df
