@@ -54,6 +54,7 @@ services:
     depends_on:
       - source_postgres
       - destination_postgres
+      - src
 networks:
   elt_network:
     driver: bridge

@@ -3,10 +3,11 @@ from sqlalchemy import create_engine
 import logging
 import os
 
-DB_NAME = os.getenv('PGDB')
-DB_PASS = os.getenv('PGPASS')
-DB_HOST = os.getenv('PGHOST')
-DB_PORT = os.getenv('DBPORT')
+DB_NAME = 'source_postgres'
+DB_PASS = 'secret'
+DB_HOST = 'postgres'
+DB_PORT = '5432'
+DB_TABLE='source_db'
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -27,7 +28,7 @@ healthcare_dataframe['Name']=healthcare_dataframe['Name'].str.title()
 healthcare_dataframe['Billing Amount'] = healthcare_dataframe['Billing Amount'].round(2) 
 healthcare_dataframe.columns = healthcare_dataframe.columns.str.strip().str.lower().str.replace(' ','_') 
 
-CONNECTION_STRING = "postgresql://{DB_HOST}:{DB_PASS}@source_postgres:{DB_PORT}/{DB_NAME}"
+CONNECTION_STRING = f"postgresql://{DB_HOST}:{DB_PASS}@{DB_NAME}:{DB_PORT}/{DB_TABLE}"
 
 logger.info(f'Attempting to insert with engine')
 try:
