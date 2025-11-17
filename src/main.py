@@ -10,6 +10,8 @@ DB_HOST = os.getenv('DB_HOST')
 DB_PORT = os.getenv('DB_PORT')
 DB_TABLE = os.getenv('DB_TABLE')
 
+HEALTHCARE_CSV_PATH = './data/healthcare_dataset.csv'
+
 logger = logging.getLogger(__name__)
 logging.basicConfig(
     format='%(asctime)s [%(levelname)s]: %(message)s',
@@ -20,19 +22,22 @@ logging.basicConfig(
     level=logging.INFO)
 logger.info('Logger Initialization success.')
     
-    
 def read_input():
-    HEALTHCARE_CSV_PATH = './data/healthcare_dataset.csv'
+    logger.info(f'Reading healthcare data from {HEALTHCARE_CSV_PATH}.')
     healthcare_dataframe = get_csv(HEALTHCARE_CSV_PATH)
     return healthcare_dataframe
     
 def clean_data(healthcare_dataframe):
+    logger.info(f'Standardizing Names.')
     healthcare_dataframe['Name']=healthcare_dataframe['Name'].str.title()
+    logger.info(f'Standardizing Bill Amount.')
     healthcare_dataframe['Billing Amount'] = healthcare_dataframe['Billing Amount'].round(2) 
+    logger.info(f'Standardizing the column names.')
     healthcare_dataframe.columns = healthcare_dataframe.columns.str.strip().str.lower().str.replace(' ','_') 
     return healthcare_dataframe
     
 def drop_duplicates_or_na(healthcare_dataframe):
+    logger.info(f'Dropping duplicate entries.')
     healthcare_dataframe.drop_duplicates()
     healthcare_dataframe.dropna()
     return healthcare_dataframe
@@ -42,9 +47,9 @@ def validate_schema(df):
 
 def load_data(healthcare_dataframe, retries=5,delay=3):
     CONNECTION_STRING = f"postgresql://postgres:secret@source_postgres:5432/source_db"
-    logger.info(f'Attempting to insert with engine')
     engine = None
     for i in range(retries):   
+        logger.info(f'Attempting to insert with engine, attempt {i}')
         try:
             engine = create_engine(CONNECTION_STRING)
             healthcare_dataframe.to_sql(
@@ -56,7 +61,7 @@ def load_data(healthcare_dataframe, retries=5,delay=3):
             logger.info(f'Successfully wrote {len(healthcare_dataframe)} rows to Postgres.')
             break
         except Exception as e:
-            logger.exception(f'Failed to create engine, retrying in {delay} seconds. {i}/{retries} retries')
+            logger.exception(f'Failed to create engine, retrying in {delay} seconds. {i}/{retries} retries.')
             time.sleep(delay)    
     else:
         raise Exception("Could not connect to DB")
