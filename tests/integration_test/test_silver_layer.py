@@ -2,7 +2,6 @@ import pandas as pd
 
 from src.silver_layer.clean_data import clean_data
 
-
 df = pd.DataFrame({
     "Name":["AlicE jane","bob", 'bob', 'JOE DIRT'],
     "Billing Amount":[123.456,1.00,1.00,567.89652],
@@ -23,4 +22,3 @@ def test_standardization():
     assert result["name"].tolist() == expected_names
     assert result["billing_amount"].tolist() == expected_bills
     assert result.columns.tolist() == expected_columns
-    

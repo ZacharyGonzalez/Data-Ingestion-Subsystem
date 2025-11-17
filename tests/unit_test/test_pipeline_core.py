@@ -17,7 +17,7 @@ def test_standardize_bill():
     expected_bills = [123.46, 1.00, 1.00, 567.90]
     assert result["Billing Amount"].tolist() == expected_bills
 
-def test_standardize_columns(): # MULTIPLE SPACES WILL BREAK THIS STILL
+def test_standardize_columns():
     df = pd.DataFrame({
         "unStandaRd Columns":[1,1,1,2]
     })

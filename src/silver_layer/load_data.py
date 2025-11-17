@@ -15,21 +15,21 @@ DB_TABLE = os.getenv('DB_TABLE')
 
 def load_data(healthcare_dataframe,retries=5,delay=3) -> None:
     """Send data to the database"""
-    connection_string = f"postgresql://postgres:secret@source_postgres:5432/source_db"
+    connection_string = "postgresql://postgres:secret@source_postgres:5432/source_db"
     engine = None
     for i in range(retries):
         logger.info('Attempting to insert with engine, attempt %s...',i)
         try:
-            engine = create_engine(connection_string)
-            healthcare_dataframe.to_sql(
-                name='healthcare',
-                con=engine,
-                if_exists='append',
-                index=False
-                )
-            logger.info('Successfully wrote %s rows to Postgres.',{len(healthcare_dataframe)})
+            with create_engine(connection_string).begin() as engine:
+                healthcare_dataframe.to_sql(
+                    name='healthcare',
+                    con=engine,
+                    if_exists='append',
+                    index=False
+                    )
+                logger.info('Successfully wrote %s rows to Postgres.',len(healthcare_dataframe))
             break
-        except:
+        except Exception:
             logger.warning('Failed, retrying in %s seconds. %s/%s retries.',delay,i,retries)
             time.sleep(delay)
     else:
