@@ -1,8 +1,9 @@
-from sqlalchemy import create_engine
+"""Sends data to the postgres container"""
 import time
 import os
-from sqlalchemy.dialects.postgresql import insert
 import logging
+from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy import create_engine
 logger = logging.getLogger(__name__)
 
 DB_NAME = os.getenv('DB_NAME')
@@ -13,23 +14,24 @@ DB_TABLE = os.getenv('DB_TABLE')
 
 
 def load_data(healthcare_dataframe,retries=5,delay=3) -> None:
-    CONNECTION_STRING = f"postgresql://postgres:secret@source_postgres:5432/source_db"
+    """Send data to the database"""
+    connection_string = f"postgresql://postgres:secret@source_postgres:5432/source_db"
     engine = None
-    for i in range(retries):   
-        logger.info(f'Attempting to insert with engine, attempt {i}...')
+    for i in range(retries):
+        logger.info('Attempting to insert with engine, attempt %s...',i)
         try:
-            engine = create_engine(CONNECTION_STRING)
+            engine = create_engine(connection_string)
             healthcare_dataframe.to_sql(
                 name='healthcare',
                 con=engine,
                 if_exists='append',
                 index=False
                 )
-            logger.info(f'Successfully wrote {len(healthcare_dataframe)} rows to Postgres.')
+            logger.info('Successfully wrote %s rows to Postgres.',{len(healthcare_dataframe)})
             break
-        except Exception as e:
-            logger.warning(f'Failed to create engine, retrying in {delay} seconds. {i}/{retries} retries.')
-            time.sleep(delay)    
+        except:
+            logger.warning('Failed, retrying in %s seconds. %s/%s retries.',delay,i,retries)
+            time.sleep(delay)
     else:
-        logger.error(f'Failed to create engine after {retries} tries.')
+        logger.error('Failed to create engine after %s tries.',retries)
         raise Exception("Could not connect to DB.")
