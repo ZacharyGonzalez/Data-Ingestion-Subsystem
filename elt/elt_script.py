@@ -1,6 +1,18 @@
 import os
 import subprocess
 import time
+import logging
+
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    format='%(asctime)s [%(levelname)s]: %(message)s',
+    datefmt='%m/%d/%Y %I:%M:%S %p',
+    filename='./logs/etl_pipeline.log',
+    filemode='w',
+    encoding='utf-8',
+    level=logging.INFO)
+logger.info('Logger Initialization success.')
 
 
 def wait_for_postgres(host, max_retries=5, delay_seconds=5):
