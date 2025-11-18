@@ -6,13 +6,13 @@ logger = logging.getLogger(__name__)
 def standardize_names(df) -> pd.DataFrame:
     """Properly Capitalizes Names"""
     logger.info('Standardizing Names.')
-    df['Name']=df['Name'].str.title()
+    df['name']=df['name'].str.title()
     return df
 
 def standardize_bill(df) -> pd.DataFrame:
     """Round bills to the nearest cent at 2 points of precision"""
     logger.info('Standardizing Bill Amount.')
-    df['Billing Amount'] = df['Billing Amount'].round(2)
+    df['billing_amount'] = df['billing_amount'].round(2)
     return df
 
 def standardize_columns(df) -> pd.DataFrame:
@@ -25,5 +25,4 @@ def clean_data(df) -> pd.DataFrame:
     """Use all forms of standardization to clean the data"""
     df = standardize_names(df)
     df = standardize_bill(df)
-    df = standardize_columns(df)
     return df

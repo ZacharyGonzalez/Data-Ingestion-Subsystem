@@ -3,15 +3,29 @@ import time
 import os
 import logging
 from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
+import psycopg2
 logger = logging.getLogger(__name__)
 
-DB_NAME = os.getenv('DB_NAME')
-DB_PASS = os.getenv('DB_PASS')
-DB_HOST = os.getenv('DB_HOST')
-DB_PORT = os.getenv('DB_PORT')
-DB_TABLE = os.getenv('DB_TABLE')
 
+PATIENT_INSERT = """
+INSERT INTO patient(name, age, gender, blood_type, medical_condition, medication, test_results)
+VALUES (%s, %s, %s, %s, %s, %s, %s)
+ON CONFLICT(patient_id) DO NOTHING
+"""
+
+def get_connection():
+    try:
+        return psycopg2.connect(
+            database='source_db',
+            user='postgres',
+            password='secret',
+            host="source_postgres",
+            port=5432,
+        )
+    except:
+        logger.exception("Connection to DB failed")
+        raise Exception
 
 def load_data(healthcare_dataframe,retries=5,delay=3) -> None:
     """Send data to the database"""
@@ -20,13 +34,22 @@ def load_data(healthcare_dataframe,retries=5,delay=3) -> None:
     for i in range(retries):
         logger.info('Attempting to insert with engine, attempt %s...',i)
         try:
-            with create_engine(connection_string).begin() as engine:
-                healthcare_dataframe.to_sql(
-                    name='healthcare',
-                    con=engine,
-                    if_exists='append',
-                    index=False
-                    )
+            with get_connection() as conn, conn.cursor() as curr:
+                for i, row in healthcare_dataframe.iterrows():
+                    curr.execute(
+                        PATIENT_INSERT,
+                        (
+                            row['name'],
+                            row['age'],
+                            row['gender'],
+                            row['blood_type'],
+                            row['medical_condition'],
+                            row['medication'],
+                            row['test_results']
+                            )
+                        )
+                    patient_id = curr.fetchone()[0]
+                conn.commit()
                 logger.info('Successfully wrote %s rows to Postgres.',len(healthcare_dataframe))
             break
         except Exception:
