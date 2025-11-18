@@ -1,6 +1,5 @@
 """Sends data to the postgres container"""
 import time
-import os
 import logging
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy import create_engine, text
@@ -12,6 +11,7 @@ PATIENT_INSERT = """
 INSERT INTO patient(name, age, gender, blood_type, medical_condition, medication, test_results)
 VALUES (%s, %s, %s, %s, %s, %s, %s)
 ON CONFLICT(patient_id) DO NOTHING
+RETURNING patient_id
 """
 
 def get_connection():
@@ -29,10 +29,8 @@ def get_connection():
 
 def load_data(healthcare_dataframe,retries=5,delay=3) -> None:
     """Send data to the database"""
-    connection_string = "postgresql://postgres:secret@source_postgres:5432/source_db"
-    engine = None
     for i in range(retries):
-        logger.info('Attempting to insert with engine, attempt %s...',i)
+        logger.info('Attempting to insert with psycopg2, attempt %s...',i)
         try:
             with get_connection() as conn, conn.cursor() as curr:
                 for i, row in healthcare_dataframe.iterrows():
@@ -53,8 +51,8 @@ def load_data(healthcare_dataframe,retries=5,delay=3) -> None:
                 logger.info('Successfully wrote %s rows to Postgres.',len(healthcare_dataframe))
             break
         except Exception:
-            logger.warning('Failed, retrying in %s seconds. %s/%s retries.',delay,i,retries)
+            logger.warning('Failed, retrying transaction in %s seconds. %s/%s retries.',delay,i,retries)
             time.sleep(delay)
     else:
-        logger.error('Failed to create engine after %s tries.',retries)
+        logger.error('Failed to write to Database after %s tries.',retries)
         raise Exception("Could not connect to DB.")

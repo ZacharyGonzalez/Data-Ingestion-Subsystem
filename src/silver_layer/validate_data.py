@@ -48,7 +48,6 @@ class Patient(BaseModel):
     medication: str
     test_results: str
 
-
 def validate_data(df:pd.DataFrame)->Tuple[pd.DataFrame,List[dict]]:
     """Compares Dataframe to RawCSV pydantic class
         returns a tuple containing a dataframe and a list of dict rejects
