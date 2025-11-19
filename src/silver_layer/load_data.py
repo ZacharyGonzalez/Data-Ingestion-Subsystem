@@ -8,22 +8,27 @@ import psycopg2
 
 logger = logging.getLogger(__name__)
 
-
+MEDICAL_INSERT = """
+    INSERT INTO medical_record(patient_id,blood_type, medical_condition, medication, test_results)
+    values (%s, %s, %s, %s, %s)
+    ON CONFLICT(patient_id) DO NOTHING   
+"""
 PATIENT_INSERT = """
-INSERT INTO patient(name, age, gender, blood_type, medical_condition, medication, test_results)
-VALUES (%s, %s, %s, %s, %s, %s, %s)
-ON CONFLICT(patient_id) DO NOTHING
-RETURNING patient_id
+    INSERT INTO patient(name, age, gender)
+    VALUES (%s, %s, %s, %s, %s, %s, %s)
+    ON CONFLICT(patient_id) DO NOTHING
+    RETURNING patient_id
 """
 INSURANCE_INSERT = """
-INSERT INTO insurance(insurance_provider, billing_amount, patient_id)
-VALUES (%s, %s, %s)
-ON CONFLICT(insurance_claim) DO NOTHING
+    INSERT INTO insurance(insurance_provider, billing_amount, patient_id)
+    VALUES (%s, %s, %s)
+    ON CONFLICT(insurance_claim) DO NOTHING
 """
 ADMISSION_INSERT = """
-INSERT INTO admissions(hospital, room_number, date_of_admission, discharge_date, admission_type, patient_id)
-VALUES (%s, %s, %s, %s, %s, %s)
-ON CONFLICT(admission_id) DO NOTHING
+    INSERT INTO admissions(hospital, room_number, date_of_admission, discharge_date, admission_type, patient_id)
+    VALUES (%s, %s, %s, %s, %s, %s)
+    ON CONFLICT(admission_id) DO NOTHING
+    RETURNING admission_id
 """
 
 
@@ -54,13 +59,19 @@ def load_data(healthcare_dataframe, retries=5, delay=3) -> None:
                             row["name"],
                             row["age"],
                             row["gender"],
+                        ),
+                    )
+                    patient_id = curr.fetchone()[0]
+                    curr.execute(
+                        MEDICAL_INSERT,
+                        (
+                            patient_id,
                             row["blood_type"],
                             row["medical_condition"],
                             row["medication"],
                             row["test_results"],
                         ),
                     )
-                    patient_id = curr.fetchone()[0]
                     curr.execute(
                         INSURANCE_INSERT,
                         (row["insurance_provider"], row["billing_amount"], patient_id),
@@ -76,6 +87,8 @@ def load_data(healthcare_dataframe, retries=5, delay=3) -> None:
                             patient_id,
                         ),
                     )
+                    admission_id = curr.fetchone()[0]
+
                 conn.commit()
                 logger.info(
                     "Successfully wrote %s rows to Postgres.", len(healthcare_dataframe)

@@ -49,6 +49,9 @@ class Patient(BaseModel):
     name: str
     age: PositiveInt
     gender: str
+
+
+class MedicalRecord(BaseModel):
     blood_type: str
     medical_condition: str
     medication: str
