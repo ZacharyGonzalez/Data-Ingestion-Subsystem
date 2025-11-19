@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS Patient(
 );
 
 CREATE TABLE IF NOT EXISTS Medical_Record(
-    patient_id INT REFERENCES Patient(patient_id) ON DELETE CASCADE
+    patient_id INT REFERENCES Patient(patient_id) ON DELETE CASCADE,
     blood_type VARCHAR(5),
     medical_condition VARCHAR(100),
     medication VARCHAR(100),
