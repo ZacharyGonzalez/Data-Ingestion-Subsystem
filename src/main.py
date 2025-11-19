@@ -5,14 +5,14 @@ Main module to start the ETL Pipeline
 import logging
 import os
 from datetime import datetime
-from readers.csv_reader import read_csv
+from readers.csv_reader import safe_read_csv
 from silver_layer.clean_data import clean_data
 from silver_layer.clean_data import standardize_columns
+from silver_layer.clean_data import drop_duplicates_or_na
 from silver_layer.load_data import load_data
-from silver_layer.drop_rows import drop_duplicates_or_na
 from silver_layer.validate_data import validate_data
 
-HEALTHCARE_CSV_PATH = "./data/healthcare_dataset.csv"
+HEALTHCARE_CSV_PATH = "./data/healthcare_dataset.cv"
 
 
 def make_logger():
@@ -34,7 +34,7 @@ def make_logger():
 def main():
     """Runs the primary stages of the ETL Pipeline"""
     make_logger()
-    df = read_csv(HEALTHCARE_CSV_PATH)
+    df = safe_read_csv(HEALTHCARE_CSV_PATH)
     df = standardize_columns(df)
     df, rejects = validate_data(df)
     df = drop_duplicates_or_na(df)

@@ -27,7 +27,6 @@ services:
       - elt_network
     depends_on:
       - source_postgres
-      - destination_postgres
     volumes:
       - .:/app
       - ./.env:/app/.env
@@ -45,7 +44,6 @@ services:
       - elt_network
     depends_on:
       - source_postgres
-      - destination_postgres
       - src
 networks:
   elt_network:
