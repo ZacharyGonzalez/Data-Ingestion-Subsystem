@@ -23,13 +23,13 @@ def standardize_bill(df) -> pd.DataFrame:
 def standardize_columns(df) -> pd.DataFrame:
     """snake_case all column names"""
     logger.info("Standardizing the column names.")
-    df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
+    df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_") #rewrite this into a for loop for readability
     return df
 
 def drop_duplicates_or_na(healthcare_dataframe):
     """This function will only fail if the dataframe is None or completely empty"""
     logger.info("Dropping duplicate entries.")
-    healthcare_dataframe.drop_duplicates()
+    healthcare_dataframe.drop_duplicates() #Log duplicates and drops
     healthcare_dataframe.dropna()
     logger.info("Successfully dropped duplicate entries.")
     return healthcare_dataframe

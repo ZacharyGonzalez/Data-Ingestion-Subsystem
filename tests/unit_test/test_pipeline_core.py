@@ -27,5 +27,5 @@ def test_standardize_column():
         {"Name": ["AliCe BRAIN", "bob ross"], "BILLING_amouNT": [100, 200]}
     )
     df = standardize_columns(df)
-    expected_columns = ['name','billing_amount']
+    expected_columns = ["name", "billing_amount"]
     assert df.columns.to_list() == expected_columns
