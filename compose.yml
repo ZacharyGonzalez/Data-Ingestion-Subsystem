@@ -1,16 +1,19 @@
 version: "3.9"
 services:
+ 
+
   source_postgres:
+    env_file: ".env"
     image: postgres:latest
-    container_name: source_postgres
+    container_name: ${DB_HOST}
     ports:
       - "5433:5432"
     networks:
       - elt_network
     environment:
-      POSTGRES_DB: source_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: ${DATABASE}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
     volumes:
       - ./source_db_init/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
 
@@ -32,7 +35,7 @@ services:
       context: .
       dockerfile: Dockerfile
 
-    command: [ "python",'./src/main.py' ]
+    command: [ "python", './src/main.py' ]
     networks:
       - elt_network
     depends_on:
