@@ -12,7 +12,7 @@ from silver_layer.clean_data import drop_duplicates_or_na
 from silver_layer.load_data import load_data
 from silver_layer.validate_data import validate_data
 
-HEALTHCARE_CSV_PATH = "./data/healthcare_dataset.cv"
+HEALTHCARE_CSV_PATH = "./data/healthcare_dataset.csv"
 
 
 def make_logger():

@@ -1,20 +1,3 @@
-defaults:
-  db_url: postgresql+psycopg://user:pass@localhost:5432/ingest_db
-  batch_size: 5000
-  on_conflict: upsert
+# Batch Size
 
-sources:
-  - name: customers_csv
-    type: csv
-    path: data/test.csv
-    target_table: stg_customers
-    pk: [customer_id]
-    schema:
-      customer_id: int
-      first_name: str
-      last_name: str
-      email: str
-      created_at: datetime
-    rules:
-      - rule: "email LIKE '%@%'"
-      - rule: "created_at NOT NULL"
+# Retries
