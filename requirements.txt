@@ -2,5 +2,4 @@ pandas
 python-dotenv
 pytest
 pydantic
-sqlalchemy
 psycopg2-binary

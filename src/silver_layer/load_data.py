@@ -2,9 +2,14 @@
 
 import time
 import logging
-from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy import create_engine, text
 import psycopg2
+import os
+
+DATABASE = os.getenv('DATABASE')
+DB_USER = os.getenv('DB_USER')
+DB_PASS = os.getenv('DB_PASS')
+DB_HOST = os.getenv('DB_HOST')
+DB_PORT = os.getenv('DB_PORT')
 
 logger = logging.getLogger(__name__)
 
@@ -12,34 +17,34 @@ MEDICAL_INSERT = """
     INSERT INTO medical_record(patient_id,blood_type, medical_condition, medication, test_results)
     values (%s, %s, %s, %s, %s)
     ON CONFLICT(patient_id) DO NOTHING   
-"""
+    """
 PATIENT_INSERT = """
     INSERT INTO patient(name, age, gender)
     VALUES (%s, %s, %s, %s, %s, %s, %s)
     ON CONFLICT(patient_id) DO NOTHING
     RETURNING patient_id
-"""
+    """
 INSURANCE_INSERT = """
     INSERT INTO insurance(insurance_provider, billing_amount, patient_id)
     VALUES (%s, %s, %s)
     ON CONFLICT(insurance_claim) DO NOTHING
-"""
+    """
 ADMISSION_INSERT = """
     INSERT INTO admissions(hospital, room_number, date_of_admission, discharge_date, admission_type, patient_id)
     VALUES (%s, %s, %s, %s, %s, %s)
     ON CONFLICT(admission_id) DO NOTHING
     RETURNING admission_id
-"""
+    """
 
 
 def get_connection():
     try:
         return psycopg2.connect(
-            database="source_db",
-            user="postgres",
-            password="secret",
-            host="source_postgres",
-            port=5432,
+            database=DATABASE,
+            user=DB_USER,
+            password=DB_PASS,
+            host=DB_HOST,
+            port=DB_PORT,
         )
     except:
         logger.exception("Connection to DB failed")
@@ -50,8 +55,8 @@ def load_data(healthcare_dataframe, retries=5, delay=3) -> None:
     """Send data to the database"""
     for i in range(retries):
         logger.info("Attempting to insert with psycopg2, attempt %s...", i)
-        try:
-            with get_connection() as conn, conn.cursor() as curr:
+        with get_connection() as conn, conn.cursor() as curr:
+            try:
                 for i, row in healthcare_dataframe.iterrows():
                     curr.execute(
                         PATIENT_INSERT,
@@ -94,14 +99,15 @@ def load_data(healthcare_dataframe, retries=5, delay=3) -> None:
                     "Successfully wrote %s rows to Postgres.", len(healthcare_dataframe)
                 )
                 break
-        except Exception:
-            logger.warning(
-                "Failed, retrying transaction in %s seconds. %s/%s retries.",
-                delay,
-                i,
-                retries,
-            )
-            time.sleep(delay)
+            except Exception :
+                logger.warning(
+                    "Failed, retrying transaction in %s seconds. %s/%s retries.",
+                    delay,
+                    i,
+                    retries,
+                )
+                conn.rollback()
+                time.sleep(delay)
     else:
         logger.error("Failed to write to Database after %s tries.", retries)
         raise Exception("Could not connect to DB.")
