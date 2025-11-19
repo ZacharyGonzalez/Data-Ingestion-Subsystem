@@ -1,7 +1,6 @@
-"""Modeled this after what i remember from langchains test directory"""
 import pandas as pd 
 from src.silver_layer.clean_data import standardize_names, standardize_bill, standardize_columns
-
+"""ok my tests fail now, whatever fix this later"""
 def test_standardize_names():
     df = pd.DataFrame({
         "Name":["AlicE jane","bob", 'bob', 'JOE DIRT']
