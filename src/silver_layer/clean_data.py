@@ -28,7 +28,7 @@ def standardize_columns(df) -> pd.DataFrame:
 
 
 def clean_data(df) -> pd.DataFrame:
-    """Use all forms of standardization to clean the data"""
+    """Use all forms of implemented standardization to clean the data"""
     df = standardize_names(df)
     df = standardize_bill(df)
     return df

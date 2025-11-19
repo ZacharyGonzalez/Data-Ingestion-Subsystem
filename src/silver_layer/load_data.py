@@ -27,7 +27,6 @@ ADMISSION_INSERT = """
     RETURNING admission_id
     """
 
-
 def get_connection(retries=5, delay=3):
     load_dotenv()
     DATABASE = os.getenv("DATABASE")
