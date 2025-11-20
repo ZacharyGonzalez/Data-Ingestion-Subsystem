@@ -80,8 +80,6 @@ def validate_data(df: pd.DataFrame) -> Tuple[pd.DataFrame, List[dict]]:
     logger.info("Successfully validated %s rows.", len(valid_rows))
     logger.info("Rejected %s rows.", len(rejects))
     if rejects:
-        logger.debug(
-            "REJECTS:\n%s", json.dumps(rejects, indent=2)
-        )  # TODO maybe log somewhere else?
+        logger.warning("REJECTS:\n%s", json.dumps(rejects, indent=2))
 
     return (pd.DataFrame(valid_rows), pd.DataFrame(rejects))
