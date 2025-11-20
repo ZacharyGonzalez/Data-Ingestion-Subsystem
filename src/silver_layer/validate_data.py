@@ -81,9 +81,9 @@ def validate_data(df: pd.DataFrame) -> Tuple[pd.DataFrame, List[dict]]:
             valid_rows.append(valid_row.model_dump())
         except ValidationError as e:
             rejects.append({"idx": i, "row": row.to_dict(), "error": e.errors()})
-    logger.info("Successfully validated %s rows", len(valid_rows))
-    logger.info("Rejected %s rows", len(rejects))
+    logger.info("Successfully validated %s rows.", len(valid_rows))
+    logger.info("Rejected %s rows.", len(rejects))
     if rejects:
-        logger.info("REJECTS:\n%s", json.dumps(rejects, indent=2))
+        logger.debug("REJECTS:\n%s", json.dumps(rejects, indent=2)) # TODO maybe log somewhere else?
 
     return (pd.DataFrame(valid_rows), pd.DataFrame(rejects))

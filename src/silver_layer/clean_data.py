@@ -8,28 +8,31 @@ logger = logging.getLogger(__name__)
 
 def standardize_names(df) -> pd.DataFrame:
     """Properly Capitalizes Names"""
-    logger.info("Standardizing Names.")
+    logger.info("Standardizing Names...")
     df["name"] = df["name"].str.title()
     return df
 
 
 def standardize_bill(df) -> pd.DataFrame:
     """Round bills to the nearest cent at 2 points of precision"""
-    logger.info("Standardizing Bill Amount.")
+    logger.info("Standardizing Bill Amount...")
     df["billing_amount"] = df["billing_amount"].round(2)
     return df
 
 
 def standardize_columns(df) -> pd.DataFrame:
     """snake_case all column names"""
-    logger.info("Standardizing the column names.")
-    df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_") #rewrite this into a for loop for readability
+    logger.info("Standardizing the column names...")
+    df.columns = (
+        df.columns.str.strip().str.lower().str.replace(" ", "_")
+    )  # rewrite this into a for loop for readability
     return df
+
 
 def drop_duplicates_or_na(healthcare_dataframe):
     """This function will only fail if the dataframe is None or completely empty"""
-    logger.info("Dropping duplicate entries.")
-    healthcare_dataframe.drop_duplicates() #Log duplicates and drops
+    logger.info("Dropping duplicate entries...")
+    healthcare_dataframe.drop_duplicates()  # Log duplicates and drops
     healthcare_dataframe.dropna()
     logger.info("Successfully dropped duplicate entries.")
     return healthcare_dataframe
@@ -37,7 +40,10 @@ def drop_duplicates_or_na(healthcare_dataframe):
 
 def clean_data(df) -> pd.DataFrame:
     """Use all forms of implemented standardization to clean the data"""
-    df = standardize_names(df)
-    df = standardize_bill(df)
-    return df
-
+    logger.info("Attempting to clean data...")
+    try:
+        df = standardize_names(df)
+        df = standardize_bill(df)
+    except:
+        logger.exception("Error on cleaning data, ensure DF is non-empty")
+    return df if len(df) == 0 else None

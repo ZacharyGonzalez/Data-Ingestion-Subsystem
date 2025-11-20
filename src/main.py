@@ -42,9 +42,10 @@ def main():
         valid_df, rejects_df = validate_data(chunk)
         reject_total += len(rejects_df)
         valid_total += len(valid_df)
-        clean_valid_df = clean_data(valid_df)
-        clean_valid_df = drop_duplicates_or_na(clean_valid_df)
-        load_data(clean_valid_df, rejects_df)
+        clean_valid_df = clean_data(valid_df) # if DF is empty this will gracefully fail
+        if clean_valid_df:
+            clean_valid_df = drop_duplicates_or_na(clean_valid_df)
+            load_data(clean_valid_df, rejects_df)
 
 
 if __name__ == "__main__":
