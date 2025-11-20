@@ -5,6 +5,7 @@ import logging
 import psycopg2
 from dotenv import load_dotenv
 import os
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 
@@ -56,7 +57,9 @@ def get_connection(retries=5, delay=3):
     logger.exception("Failed to connect to DB after %s tries.", retries)
 
 
-def load_data(healthcare_dataframe, rejects_dataframe) -> None:
+def load_data(
+    healthcare_dataframe: pd.DataFrame, rejects_dataframe: pd.DataFrame
+) -> None:
     """Send data to the database"""
     with get_connection() as conn, conn.cursor() as curr:
         logger.info("Attempting to insert with psycopg2...")
