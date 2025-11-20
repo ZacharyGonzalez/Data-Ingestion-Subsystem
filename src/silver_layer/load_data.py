@@ -26,6 +26,12 @@ ADMISSION_INSERT = """
     VALUES (%s, %s, %s, %s, %s, %s)
     RETURNING admission_id
     """
+REJECTS_INSERT = """
+    INSERT INTO csvrejects(name, age, gender, blood_type, medical_condition, medication, test_results, insurance_provider, billing_amount,hospital, room_number, date_of_admission, discharge_date, admission_type)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    RETURNING admission_id
+    """
+
 
 def get_connection(retries=5, delay=3):
     load_dotenv()
@@ -35,7 +41,7 @@ def get_connection(retries=5, delay=3):
     DB_HOST = os.getenv("DB_HOST")
     DB_PORT = os.getenv("DB_PORT")
     for i in range(retries):
-        logger.info('Making PSYCOPG2 connection!')
+        logger.info("Making PSYCOPG2 connection!")
         try:
             return psycopg2.connect(
                 database=DATABASE,
@@ -50,7 +56,7 @@ def get_connection(retries=5, delay=3):
     logger.exception("Failed to connect to DB after %s tries.", retries)
 
 
-def load_data(healthcare_dataframe) -> None:
+def load_data(healthcare_dataframe, rejects_dataframe) -> None:
     """Send data to the database"""
     with get_connection() as conn, conn.cursor() as curr:
         logger.info("Attempting to insert with psycopg2...")

@@ -1,19 +1,18 @@
-"""General safe handler for CSV Reading"""
-
 import logging
 import pandas as pd
 
 logger = logging.getLogger(__name__)
 
-
-def safe_read_csv(path) -> pd.DataFrame:
-    """Safe checker for CSV Reading"""
+def safe_read_csv(path: str, chunk_size: int):
+    """Safe CSV reader that yields chunks."""
     logger.info("Reading data from %s.", path)
     try:
-        df = pd.read_csv(path)
-        logger.info("Successfully read data from %s.", path)
-        logger.info("Successfully loaded %s into memory.", len(df))
-    except:
-        logger.exception('Failed to read from %s, does it exist?',path)
+        reader = pd.read_csv(path, chunksize=chunk_size)
+        logger.info("Successfully opened %s for chunked reading.", path)
+        for i, chunk in enumerate(reader, start=1):
+            logger.info("Yielding chunk %s with %s rows.", i, len(chunk))
+            logger.info(chunk)
+            yield chunk
+    except Exception as e:
+        logger.exception('Failed to read %s: %s', path, e)
         raise
-    return df
