@@ -1,10 +1,12 @@
-"""Sends data to the postgres container"""
+"""Sends data to the postgres container
+
+TODO: Composite key and then upsert based on collisions"""
 
 import time
 import logging
 import psycopg2
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
 import pandas as pd
 
 logger = logging.getLogger(__name__)

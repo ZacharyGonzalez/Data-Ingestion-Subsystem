@@ -1,11 +1,12 @@
 """Ensure the dataframe adheres to the schema before insertion of data"""
 
 import logging
+import json
+from typing import List, Tuple, Annotated
 from datetime import datetime
 from pydantic import BaseModel, PositiveInt, ValidationError, StringConstraints, Field
-from typing import List, Tuple, Annotated
 import pandas as pd
-import json
+
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +35,7 @@ class RawCSV(BaseModel):
         str,
         StringConstraints(
             min_length=4, max_length=40, pattern=r"^[A-Za-z \.]{2,40}$"
-        ),  # i am not going to concern myself with mr.,mrs., and jr.'s since regex is not a criterion
+        ),  # i am not going to concern myself with mr.,mrs., and jr.'s names
     ]
     hospital: Annotated[
         str,
@@ -59,11 +60,6 @@ class RawCSV(BaseModel):
         str,
         StringConstraints(min_length=3, max_length=40, pattern=r"^[A-Za-z]{1,40}$"),
     ]
-
-    def validate_name_proper(name: str) -> bool:
-        if len(name.split()) != 2 or len(name) > 40 or len(name) < 3:
-            return False
-        return True
 
 
 def validate_data(df: pd.DataFrame) -> Tuple[pd.DataFrame, List[dict]]:

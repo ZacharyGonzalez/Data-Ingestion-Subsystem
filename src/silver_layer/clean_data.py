@@ -32,9 +32,11 @@ def standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
 def drop_duplicates_or_na(healthcare_dataframe: pd.DataFrame) -> pd.DataFrame:
     """This function will only fail if the dataframe is None or completely empty"""
     logger.info("Dropping duplicate entries...")
-    logger.debug(len(healthcare_dataframe.drop_duplicates()))
-    logger.debug(len(healthcare_dataframe.dropna()))
+    num_duplicates = len(healthcare_dataframe) - len(healthcare_dataframe.drop_duplicates())
+    logger.info("pre-delete %s" ,num_duplicates)
     df = healthcare_dataframe.drop_duplicates()
+    num_duplicates = len(df) - len(df.drop_duplicates())
+    logger.info("post-delete %s" ,num_duplicates)
     df = df.dropna()
     logger.info("Successfully dropped duplicate entries.")
     return df
