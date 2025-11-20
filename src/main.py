@@ -1,7 +1,7 @@
 """
 Main module to start the ETL Pipeline
 """
-
+import json
 import logging
 import os
 from datetime import datetime
@@ -39,7 +39,7 @@ def main():
     df, rejects = validate_data(df)
     df = drop_duplicates_or_na(df)
     df = clean_data(df)
-    load_data(df)
+    #load_data(df)
 
 
 if __name__ == "__main__":

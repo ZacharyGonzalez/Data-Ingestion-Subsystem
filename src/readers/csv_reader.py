@@ -12,6 +12,7 @@ def safe_read_csv(path) -> pd.DataFrame:
     try:
         df = pd.read_csv(path)
         logger.info("Successfully read data from %s.", path)
+        logger.info("Successfully loaded %s into memory.", len(df))
     except:
         logger.exception('Failed to read from %s, does it exist?',path)
         raise

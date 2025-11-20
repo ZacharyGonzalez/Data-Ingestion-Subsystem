@@ -55499,3 +55499,28 @@ KYle pEREz,61,Female,AB-,Obesity,2020-01-23,Taylor Sullivan,Tucker-Moyer,Cigna,3
 HEATher WaNG,38,Female,B+,Hypertension,2020-07-13,Joe Jacobs DVM,"and Mahoney Johnson Vasquez,",UnitedHealthcare,27620.764717427424,347,Urgent,2020-08-10,Ibuprofen,Abnormal
 JENniFER JOneS,43,Male,O-,Arthritis,2019-05-25,Kimberly Curry,"Jackson Todd and Castro,",Medicare,32451.092358488677,321,Elective,2019-05-31,Ibuprofen,Abnormal
 jAMES GARCiA,53,Female,O+,Arthritis,2024-04-02,Dennis Warren,Henry Sons and,Aetna,4010.134171643987,448,Urgent,2024-04-29,Ibuprofen,Abnormal
+,45,Female,O+,Hypertension,1979-03-12,Linda,Rowe,Medicare,1234.56,101,Elective,2020-05-01,Aspirin,Normal
+John Doe,-5,Male,A+,Diabetes,2010-06-01,Mark,Lee,Cigna,200.00,102,Urgent,2020-06-15,Metformin,Abnormal
+Mary Smith,0,Female,B-,Allergy,2018-11-11,Sara,Khan,Blue Cross,50.00,103,Elective,2018-12-01,Antihistamine,Normal
+Alex Roe,twenty,Male,O+,Asthma,1995-02-02,Paul,Ng,UnitedHealthcare,300.00,104,Emergency,2019-01-10,Inhaler,Normal
+Patricia LongnameExcessivelyAndSuspiciouslyLongForANameField12345,34,Female,AB+,Arthritis,1991-07-07,Eve,Stone,Aetna,400.00,105,Elective,2021-03-03,Ibuprofen,Abnormal
+Chris P,29,Unknown,O-,Fracture,1996-04-04,Ann,White,PrivateInsurer,-150.00,106,Urgent,2019-09-09,Ibuprofen,Normal
+Sam O'Neil,151,Male,B+,Obesity,1874-12-12,Tim,Green,Medicaid,1000.00,107,Elective,2020-10-10,Aspirin,Abnormal
+Future Kid,12,Female,A-,Hypertension,2026-01-01,Drake,Young,Blue Cross,75.00,108,Elective,2025-12-01,Propranolol,Normal
+Liu Wei,40,Female,X0,Diabetes,1985-05-05,Chen,Li,Cigna,not_a_number,109,Elective,2010-05-05,Insulin,Abnormal
+Duplicate Person,30,Male,O+,Cold,1994-09-09,Greg,Hall,Medicare,60.00,110,Elective,2019-11-11,Paracetamol,Maybe
+,52,Male,X0,Hypertension,1988-04-19,Laura,King,Medicare,not_a_number,402,Elective,2020-02-02,Aspirin,Normal
+MArY sMith,-3,Female,B-,Arthritis,2010-13-40,Paul,Harris,Cigna,250.00,305,Urgent,2011-01-01,Ibuprofen,Normal
+JACOB TURNer,0,Male,O+,Asthma,1999-02-30,Anna,Stone,Blue Cross,85.20,212,Emergency,2000-03-01,Inhaler,Abnormal
+ALexA ReeD,twenty,Female,A+,Migraine,2021-05-10,Sara,White,Aetna,500.00,-12,Elective,2021-05-15,Tylenol,Normal
+Robert LongnameThatIsFarTooExcessiveToBeRealisticallyValid,33,Male,AB+,Fracture,1995-04-14,Eve,Lopez,Medicare,150.00,310,Urgent,1995-05-01,Ibuprofen,Abnormal
+Carla Jones,45,Unknown,B+,Obesity,2000-11-11,Tim,West,UnitedHealthcare,400.00,?,Elective,2001-01-01,Aspirin,Normal
+Sam O'Neil,151,Male,O-,Hypertension,1874-12-12,Tim,Green,Medicaid,1000.00,107,Elective,2020-10-10,Aspirin,Abnormal
+Future Child,12,Female,A-,Hypertension,2026-01-01,Drake,Young,Blue Cross,75.00,108,Elective,2025-12-01,Propranolol,Normal
+LiU WeI,40,Female,X0,Diabetes,1985-05-05,Chen,Li,Cigna,not_a_number,109,Elective,2010-05-05,Insulin,Abnormal
+Duplicate Person,30,Male,O+,Cold,1994-09-09,Greg,Hall,Medicare,60.00,110,Elective,2019-11-11,Paracetamol,Maybe
+T0m Null,NaN,Male,B-,Migraine,1993-07-07,Sam,Young,Aetna,350.00,208,Urgent,1993-08-01,Aspirin,Normal
+Jenny Rivera,,Female,O+,Anxiety,2001-04-14,Megan,Moore,Cigna,600.00,214,Elective,2001-05-10,Prozac,Normal
+Kevin,,Unknown,AB-,Cold,not-a-date,Lena,Perez,Blue Cross,100.0a,120,Emergency,2005-10-33,Ibuprofen,Normal
+N/A,55,Female,,Arthritis,1987-03-03,Henry,Scott,Medicare,200.00,130,Elective,1987-04-01,Aspirin,Normal
+Chr!s P3t3rs,29,Male,O+,Hypertension,1998-02-02,Amanda,Green,UnitedHealthcare,-150.00,140,Urgent,1998-03-01,Aspirin,Normal
