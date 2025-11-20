@@ -43,7 +43,7 @@ def main():
         reject_total += len(rejects_df)
         valid_total += len(valid_df)
         clean_valid_df = clean_data(valid_df) # if DF is empty this will gracefully fail
-        if clean_valid_df:
+        if len(clean_valid_df)>0:
             clean_valid_df = drop_duplicates_or_na(clean_valid_df)
             load_data(clean_valid_df, rejects_df)
 
