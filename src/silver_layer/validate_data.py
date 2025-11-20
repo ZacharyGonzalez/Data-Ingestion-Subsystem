@@ -63,7 +63,7 @@ class RawCSV(BaseModel):
 
 
 def validate_data(df: pd.DataFrame) -> Tuple[pd.DataFrame, List[dict]]:
-    """Compares Dataframe to RawCSV pydantic class
+    """Compares Dataframe to custom RawCSV pydantic class
     returns a tuple containing a dataframe and a list of dict rejects
     """
     valid_rows = []

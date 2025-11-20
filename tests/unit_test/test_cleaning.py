@@ -5,7 +5,7 @@ from src.silver_layer.clean_data import (
     standardize_names,
     standardize_bill,
     standardize_columns,
-    drop_duplicates_or_na
+    drop_duplicates_or_na,
 )
 
 
@@ -30,7 +30,8 @@ def test_standardize_column():
     df = standardize_columns(df)
     expected_columns = ["name", "billing_amount"]
     assert df.columns.to_list() == expected_columns
-    
+
+
 def test_duplicated_names():
     df = pd.DataFrame({"name": ["bob ross", "bob ross", "bob ross"]})
     df = drop_duplicates_or_na(df)
