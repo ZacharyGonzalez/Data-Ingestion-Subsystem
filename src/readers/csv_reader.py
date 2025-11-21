@@ -11,7 +11,6 @@ def safe_read_csv(path: str, chunk_size: int):
         logger.info("Successfully opened %s for chunked reading.", path)
         for i, chunk in enumerate(reader, start=1):
             logger.info("Yielding chunk %s with %s rows.", i, len(chunk))
-            logger.info('\n%s',chunk)
             yield chunk
     except Exception as e:
         logger.exception('Failed to read %s: %s', path, e)
