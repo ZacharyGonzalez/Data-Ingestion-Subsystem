@@ -4,6 +4,7 @@ Main module to start the ETL Pipeline
 
 import logging
 import os
+import time
 from datetime import datetime
 from readers.csv_reader import safe_read_csv
 from silver_layer.clean_data import clean_data
@@ -14,18 +15,21 @@ from silver_layer.validate_data import validate_data
 
 HEALTHCARE_CSV_PATH = "./data/healthcare_dataset.csv"
 CHUNK_SIZE = 5000
-
-
+os.environ["TZ"] = "America/New_York"
+time.tzset()
 def make_logger():
+    FILE_MODE="w"
     os.makedirs("./logs", exist_ok=True)
-    now = datetime.now().strftime("%Y-%m-%d %H:%M")
-    log_filename = f"./logs/etl_pipeline_{now}.log"
+    now = datetime.now().strftime("%Y-%m-%d")
+    log_filename = f"./logs/etl_{now}.log"
+    if os.path.exists(log_filename):
+        FILE_MODE = "a"
     logger = logging.getLogger(__name__)
     logging.basicConfig(
         format="%(asctime)s [%(levelname)s]: %(message)s",
         datefmt="%m/%d/%Y %I:%M:%S %p",
         filename=log_filename,
-        filemode="w",
+        filemode=FILE_MODE,
         encoding="utf-8",
         level=logging.INFO,
     )
