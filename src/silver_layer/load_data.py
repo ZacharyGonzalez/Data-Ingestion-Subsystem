@@ -1,7 +1,7 @@
 """Sends data to the postgres container
 
-TODO: Composite key and then upsert based on collisions"""
-
+TODO Deletion of a visit should get rid of the diagnosis
+"""
 import time
 import logging
 import psycopg2
