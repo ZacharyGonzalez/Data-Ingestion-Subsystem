@@ -13,7 +13,7 @@ from silver_layer.clean_data import drop_duplicates_or_na
 from silver_layer.load_data import load_data
 from silver_layer.validate_data import validate_data
 
-HEALTHCARE_CSV_PATH = "./data/healthcare_dataset.csv"
+HEALTHCARE_CSV_PATH = "./data/output_shuffled.csv"
 CHUNK_SIZE = 5000
 
 def make_logger():
@@ -35,14 +35,16 @@ def make_logger():
         level=logging.INFO,
     )
     logger.info("Logger Initialization success.")
+    return logger
 
 
 def main():
     """Runs the primary stages of the ETL Pipeline"""
-    make_logger()
+    logger = make_logger()
     reject_total = 0
     valid_total = 0
     for chunk in safe_read_csv(HEALTHCARE_CSV_PATH, CHUNK_SIZE):
+        logger.info('\n')
         chunk = standardize_columns(chunk)
         valid_df, rejects_df = validate_data(chunk)
         reject_total += len(rejects_df)

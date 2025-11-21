@@ -1,5 +1,10 @@
-DATABASE=
-DB_USER=
-DB_PASS=
-DB_HOST=
-DB_PORT=
+# below is the information for connecting to the DB from pgadmin4.
+DATABASE=source_db
+DB_USER=postgres
+DB_PASS=secret
+DB_HOST=source_postgres
+DB_PORT=5432
+
+# below is the login to localhost:5050
+PG_ADMIN_EMAIL=admin@admin.com
+PG_ADMIN_PASS=admin
