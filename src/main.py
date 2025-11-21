@@ -15,11 +15,12 @@ from silver_layer.validate_data import validate_data
 
 HEALTHCARE_CSV_PATH = "./data/healthcare_dataset.csv"
 CHUNK_SIZE = 5000
-os.environ["TZ"] = "America/New_York"
-time.tzset()
+
 def make_logger():
-    FILE_MODE="w"
+    os.environ["TZ"] = "America/New_York"
     os.makedirs("./logs", exist_ok=True)
+    time.tzset()
+    FILE_MODE="w"
     now = datetime.now().strftime("%Y-%m-%d")
     log_filename = f"./logs/etl_{now}.log"
     if os.path.exists(log_filename):

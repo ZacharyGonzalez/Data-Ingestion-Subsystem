@@ -45,7 +45,7 @@ class RawCSV(BaseModel):
         str,
         StringConstraints(min_length=3, max_length=40, pattern=r"^[A-Za-z\-, ]{1,40}$"),
     ]
-    billing_amount: float
+    billing_amount: float #Can have negative bills
     room_number: PositiveInt
     admission_type: Annotated[
         str,

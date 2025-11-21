@@ -3,6 +3,7 @@ import pandas as pd
 
 logger = logging.getLogger(__name__)
 
+
 def safe_read_csv(path: str, chunk_size: int):
     """Safe CSV reader that yields chunks."""
     logger.info("Reading data from %s.", path)
@@ -13,5 +14,5 @@ def safe_read_csv(path: str, chunk_size: int):
             logger.info("Yielding chunk %s with %s rows.", i, len(chunk))
             yield chunk
     except Exception as e:
-        logger.exception('Failed to read %s: %s', path, e)
+        logger.exception("Failed to read %s: %s", path, e)
         raise

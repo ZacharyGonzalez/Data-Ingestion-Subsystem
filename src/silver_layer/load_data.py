@@ -11,28 +11,25 @@ import pandas as pd
 
 logger = logging.getLogger(__name__)
 
-MEDICAL_INSERT = """
-    INSERT INTO medical_record(patient_id,blood_type, medical_condition, medication, test_results)
+DIAGNOSIS_INSERT = """
+    INSERT INTO diagnosis(patient_id,  doctor,  medical_condition, medication, test_results)
     values (%s, %s, %s, %s, %s)
+    RETURNING diagnosis_id
     """
 PATIENT_INSERT = """
-    INSERT INTO patient(name, age, gender)
-    VALUES (%s, %s, %s)
+    INSERT INTO patient(name, age, gender, blood_type)
+    VALUES (%s, %s, %s, %s)
+    ON CONFLICT (name, age, gender, blood_type) 
+    DO UPDATE SET name = EXCLUDED.name
     RETURNING patient_id
     """
-INSURANCE_INSERT = """
-    INSERT INTO insurance(insurance_provider, billing_amount, patient_id)
+CLAIM_INSERT = """
+    INSERT INTO claim(patient_id, insurance_provider, billing_amount)
     VALUES (%s, %s, %s)
     """
-ADMISSION_INSERT = """
-    INSERT INTO admissions(hospital, room_number, date_of_admission, discharge_date, admission_type, patient_id)
-    VALUES (%s, %s, %s, %s, %s, %s)
-    RETURNING admission_id
-    """
-REJECTS_INSERT = """
-    INSERT INTO csvrejects(name, age, gender, blood_type, medical_condition, medication, test_results, insurance_provider, billing_amount,hospital, room_number, date_of_admission, discharge_date, admission_type)
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-    RETURNING admission_id
+VISIT_INSERT = """
+    INSERT INTO visit(patient_id, diagnosis_id, hospital, room_number, date_of_admission, discharge_date, admission_type)
+    VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
 
 
@@ -69,39 +66,36 @@ def load_data(
             for _, row in healthcare_dataframe.iterrows():
                 curr.execute(
                     PATIENT_INSERT,
-                    (
-                        row["name"],
-                        row["age"],
-                        row["gender"],
-                    ),
+                    (row["name"], row["age"], row["gender"], row["blood_type"]),
                 )
                 patient_id = curr.fetchone()[0]
                 curr.execute(
-                    MEDICAL_INSERT,
+                    CLAIM_INSERT,
+                    (patient_id, row["insurance_provider"], row["billing_amount"]),
+                )
+                curr.execute(
+                    DIAGNOSIS_INSERT,
                     (
                         patient_id,
-                        row["blood_type"],
+                        row["doctor"],
                         row["medical_condition"],
                         row["medication"],
                         row["test_results"],
                     ),
                 )
+                diagnosis_id = curr.fetchone()[0]
                 curr.execute(
-                    INSURANCE_INSERT,
-                    (row["insurance_provider"], row["billing_amount"], patient_id),
-                )
-                curr.execute(
-                    ADMISSION_INSERT,
+                    VISIT_INSERT,
                     (
+                        patient_id,
+                        diagnosis_id,
                         row["hospital"],
                         row["room_number"],
                         row["date_of_admission"],
                         row["discharge_date"],
                         row["admission_type"],
-                        patient_id,
                     ),
                 )
-                admission_id = curr.fetchone()[0]
             conn.commit()
             logger.info(
                 "Successfully wrote %s rows to Postgres.", len(healthcare_dataframe)
