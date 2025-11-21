@@ -2,6 +2,7 @@
 
 TODO Deletion of a visit should get rid of the diagnosis
 """
+
 import time
 import logging
 import psycopg2
@@ -30,6 +31,8 @@ CLAIM_INSERT = """
 VISIT_INSERT = """
     INSERT INTO visit(patient_id, diagnosis_id, hospital, room_number, date_of_admission, discharge_date, admission_type)
     VALUES (%s, %s, %s, %s, %s, %s, %s)
+    ON CONFLICT (date_of_admission, discharge_date)
+    DO NOTHING
     """
 
 

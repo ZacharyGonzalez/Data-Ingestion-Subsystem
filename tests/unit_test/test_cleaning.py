@@ -37,3 +37,11 @@ def test_duplicated_names():
     df = drop_duplicates_or_na(df)
     expected_names = ["bob ross"]
     assert df["name"].tolist() == expected_names
+
+# Test psycopg2 connections and terminate them
+
+# Test pydantic validators
+
+# add dummy table for unit testing, for insertion?
+
+# Test CSV Reader
