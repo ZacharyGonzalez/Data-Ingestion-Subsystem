@@ -7,7 +7,7 @@ from src.silver_layer.clean_data import (
     standardize_columns,
     drop_duplicates_or_na,
 )
-
+ 
 
 def test_standardize_names():
     df = pd.DataFrame({"name": ["AliCe BRAIN", "bob ross"]})
@@ -37,11 +37,3 @@ def test_duplicated_names():
     df = drop_duplicates_or_na(df)
     expected_names = ["bob ross"]
     assert df["name"].tolist() == expected_names
-
-# Test psycopg2 connections and terminate them
-
-# Test pydantic validators
-
-# add dummy table for unit testing, for insertion?
-
-# Test CSV Reader

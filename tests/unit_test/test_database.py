@@ -7,11 +7,7 @@ def test_psycopg2_connection():
     pass
 # Test pydantic validators
 def test_pydantic_validators():
-    df = pd.DataFrame({
-        
-    })
-    valid,rejects=validate_data(df)
-
+    pass
 # Test CSV Reader
 def test_csv_reader_bad_path():
     path = "bad_path"

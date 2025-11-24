@@ -1,7 +1,7 @@
 .env
 logs
 __pycache__
-
+.cpython
 top_level.txt
 SOURCES.txt
 PKG-INFO
