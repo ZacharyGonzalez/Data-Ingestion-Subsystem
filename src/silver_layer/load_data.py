@@ -44,13 +44,17 @@ def get_connection(retries=5, delay=3):
     for i in range(retries):
         logger.info("Making PSYCOPG2 connection!")
         try:
-            return psycopg2.connect(
+            conn = psycopg2.connect(
                 database=DATABASE,
                 user=DB_USER,
                 password=DB_PASS,
                 host=DB_HOST,
                 port=DB_PORT,
             )
+            if conn:
+                yield conn
+            else: 
+                raise ConnectionError
         except:
             logger.warning("Connection to DB failed, retry %s/%s", i, retries)
             time.sleep(delay)
