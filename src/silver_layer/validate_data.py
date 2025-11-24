@@ -45,7 +45,7 @@ class RawCSV(BaseModel):
         str,
         StringConstraints(min_length=3, max_length=40, pattern=r"^[A-Za-z\-, ]{1,40}$"),
     ]
-    billing_amount: float #Can have negative bills
+    billing_amount: float  # Can have negative bills
     room_number: PositiveInt
     admission_type: Annotated[
         str,
@@ -79,7 +79,7 @@ def validate_data(df: pd.DataFrame) -> Tuple[pd.DataFrame, List[dict]]:
             rejects.append({"idx": i, "row": row.to_dict(), "error": e.errors()})
     logger.info("Successfully validated %s rows.", len(valid_rows))
     logger.info("Rejected %s rows.", len(rejects))
-    if rejects:    
+    if rejects:
         logger.warning("REJECTS:\n%s", json.dumps(rejects, indent=2))
 
     return (pd.DataFrame(valid_rows), pd.DataFrame(rejects))

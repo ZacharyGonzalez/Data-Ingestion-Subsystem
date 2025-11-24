@@ -16,11 +16,12 @@ from silver_layer.validate_data import validate_data
 CSV_PATH = "./data/output_shuffled.csv"
 CHUNK_SIZE = 5000
 
+
 def make_logger():
     os.environ["TZ"] = "America/New_York"
     os.makedirs("./logs", exist_ok=True)
     time.tzset()
-    FILE_MODE="w"
+    FILE_MODE = "w"
     now = datetime.now().strftime("%Y-%m-%d")
     log_filename = f"./logs/etl_{now}.log"
     if os.path.exists(log_filename):
@@ -44,13 +45,15 @@ def main():
     reject_total = 0
     valid_total = 0
     for chunk in safe_read_csv(CSV_PATH, CHUNK_SIZE):
-        logger.info('\n')
+        logger.info("\n")
         chunk = standardize_columns(chunk)
         valid_df, rejects_df = validate_data(chunk)
         reject_total += len(rejects_df)
         valid_total += len(valid_df)
-        clean_valid_df = clean_data(valid_df) # if DF is empty this will gracefully fail
-        if len(clean_valid_df)>0:
+        clean_valid_df = clean_data(
+            valid_df
+        )  # if DF is empty this will gracefully fail
+        if len(clean_valid_df) > 0:
             clean_valid_df = drop_duplicates_or_na(clean_valid_df)
             load_data(clean_valid_df, rejects_df)
 

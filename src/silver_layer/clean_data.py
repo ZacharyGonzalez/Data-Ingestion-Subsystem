@@ -34,7 +34,7 @@ def drop_duplicates_or_na(healthcare_dataframe: pd.DataFrame) -> pd.DataFrame:
     logger.info("Dropping duplicate entries...")
     df = healthcare_dataframe.drop_duplicates()
     num_duplicates = len(df) - len(df.drop_duplicates())
-    logger.info('removed %s duplicates from current chunk',num_duplicates)
+    logger.info("removed %s duplicates from current chunk", num_duplicates)
     df = df.dropna()
     logger.info("Successfully dropped duplicate entries.")
     return df
