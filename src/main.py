@@ -6,7 +6,6 @@ import logging
 import os
 import time
 from datetime import datetime
-import seaborn as sns
 from readers.csv_reader import safe_read_csv
 from silver_layer.clean_data import clean_data
 from silver_layer.clean_data import standardize_columns
@@ -54,18 +53,7 @@ def main():
         clean_valid_df = clean_data(valid_df)
         if len(clean_valid_df) > 0:
             clean_valid_df = drop_duplicates_or_na(clean_valid_df)
-            load_data(clean_valid_df, rejects_df)
+            load_data(clean_valid_df, rejects_df)        
 
-        correlation_matrix = clean_valid_df.corr()# need to encode my data
-        sns.heatmap(
-            correlation_matrix,
-            annot=True,                
-            cmap='coolwarm',           
-            fmt='.2f',                 
-            cbar=True,                 
-            linewidths=0.5,            
-            annot_kws={"size": 8},     
-            vmin=-1, vmax=1            
-        )
 if __name__ == "__main__":
     main()
