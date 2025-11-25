@@ -52,7 +52,7 @@ def get_connection(retries=5, delay=3):
                 port=DB_PORT,
             )
             if conn:
-                yield conn
+                return conn
             else: 
                 raise ConnectionError
         except:

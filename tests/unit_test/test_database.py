@@ -8,8 +8,6 @@ from src.silver_layer.load_data import get_connection
 # Test psycopg2 connections and terminate them
 def test_psycopg2_connection():
         conn = get_connection() 
-        curr = conn.cursor()
-
         assert conn is not None
         try:
             curr = conn.cursor()
