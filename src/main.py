@@ -18,6 +18,7 @@ CHUNK_SIZE = 5000
 
 
 def make_logger():
+    """Makes a logger that will append to the daily log file, or else make it"""
     os.environ["TZ"] = "America/New_York"
     os.makedirs("./logs", exist_ok=True)
     time.tzset()
@@ -53,7 +54,7 @@ def main():
         clean_valid_df = clean_data(valid_df)
         if len(clean_valid_df) > 0:
             clean_valid_df = drop_duplicates_or_na(clean_valid_df)
-            load_data(clean_valid_df, rejects_df)        
+            load_data(clean_valid_df)        
 
 if __name__ == "__main__":
     main()

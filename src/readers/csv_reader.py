@@ -3,7 +3,6 @@ import pandas as pd
 
 logger = logging.getLogger(__name__)
 
-
 def safe_read_csv(path: str, chunk_size: int=5000):
     """Safe CSV reader that yields chunks."""
     logger.info("Reading data from %s.", path)

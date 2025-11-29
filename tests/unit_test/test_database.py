@@ -5,7 +5,7 @@ from src.readers.csv_reader import safe_read_csv
 from src.silver_layer.validate_data import validate_data
 from src.silver_layer.load_data import get_connection
 
-# Test psycopg2 connections and terminate them
+# The below test fails on get_connection()
 def test_psycopg2_connection():
         conn = get_connection() 
         assert conn is not None
@@ -19,11 +19,9 @@ def test_psycopg2_connection():
         finally:
             conn.close()
         
-# Test pydantic validators
 def test_pydantic_validators():
     pass
 
-# Test CSV Reader
 def test_csv_reader_bad_path():
     path = "bad_path"
     with pytest.raises(FileNotFoundError):
