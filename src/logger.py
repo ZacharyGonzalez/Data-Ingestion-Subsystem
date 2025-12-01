@@ -2,6 +2,8 @@ import logging
 import os
 import time
 from datetime import datetime
+
+
 def make_logger():
     """Makes a logger that will append to the daily log file, or else make it"""
     os.environ["TZ"] = "America/New_York"
@@ -24,10 +26,24 @@ def make_logger():
     logger.info("Logger Initialization success.")
     return logger
 
+
 def log_function_call(func):
-    def wrapper(*args,**kwargs):
-        logging.info("Calling {%s}",func.__name__)
-        result = func(*args,**kwargs)
-        logging.info("{%s} completed",func.__name__)
+    def wrapper(*args, **kwargs):
+        logging.info("Calling {%s}", func.__name__)
+        result = func(*args, **kwargs)
+        logging.info("{%s} completed", func.__name__)
         return result
+
+    return wrapper
+
+
+def log_function_call_with_params(func):
+    def wrapper(*args, **kwargs):
+        logging.info(
+            "Calling {%s} with args {%s} and kwargs {%s}", func.__name__, args, kwargs
+        )
+        result = func(*args, **kwargs)
+        logging.info("{%s} completed", func.__name__)
+        return result
+
     return wrapper

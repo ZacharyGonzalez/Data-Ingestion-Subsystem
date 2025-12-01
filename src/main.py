@@ -17,15 +17,14 @@ CHUNK_SIZE = 5000
 
 
 def main():
-    """Runs the primary stages of the ETL Pipeline"""
+    """Runs the primary stages of the ETL Pipeline.
+    
+    We clean the data before checking for duplicates because unstandardized names are not equal to eachother even if they are the same spelling
+    """
     logger = make_logger()
-    reject_total = 0
-    valid_total = 0
     for chunk in safe_read_csv(CSV_PATH, CHUNK_SIZE):
         chunk = standardize_columns(chunk)
         valid_df, rejects_df = validate_data(chunk)
-        reject_total += len(rejects_df)
-        valid_total += len(valid_df)
         clean_valid_df = clean_data(valid_df)
         if len(clean_valid_df) > 0:
             clean_valid_df = drop_duplicates_or_na(clean_valid_df)
