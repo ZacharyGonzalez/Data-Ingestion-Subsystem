@@ -3,15 +3,17 @@ Main module to start the ETL Pipeline
 """
 
 from readers.csv_reader import safe_read_csv
-from silver_layer.clean_data import clean_data
-from silver_layer.clean_data import standardize_columns
-from silver_layer.clean_data import drop_duplicates_or_na
-from silver_layer.load_data import load_data
-from silver_layer.validate_data import validate_data
+from silver_layer.load_data.load_data import load_data
+from silver_layer.validate_data.validate_data import validate_data
 from logger import make_logger
+from silver_layer.clean_data.clean_data import (
+    clean_data,
+    drop_duplicates_or_na,
+    standardize_columns,
+)
+
 CSV_PATH = "./data/output_shuffled.csv"
 CHUNK_SIZE = 5000
-
 
 
 def main():
@@ -27,8 +29,9 @@ def main():
         clean_valid_df = clean_data(valid_df)
         if len(clean_valid_df) > 0:
             clean_valid_df = drop_duplicates_or_na(clean_valid_df)
-            load_data(clean_valid_df) 
-        logger.info('\n')       
+            load_data(clean_valid_df)
+        logger.info("\n")
+
 
 if __name__ == "__main__":
     main()

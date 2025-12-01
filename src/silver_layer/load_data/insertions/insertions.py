@@ -1,16 +1,3 @@
-"""Sends data to the postgres container
-
-TODO Deletion of a visit should get rid of the diagnosis
-"""
-
-import time
-import logging
-import pandas as pd
-from .db_pool import get_connection
-from logger import log_function_call
-
-logger = logging.getLogger(__name__)
-
 DIAGNOSIS_INSERT = """
     INSERT INTO diagnosis(patient_id,  doctor,  medical_condition, medication, test_results)
     values (%s, %s, %s, %s, %s)
@@ -77,30 +64,3 @@ def visit_insertion(curr, row, patient_id, diagnosis_id):
             row["admission_type"],
         ),
     )
-
-@log_function_call
-def load_data(healthcare_dataframe: pd.DataFrame) -> None:
-    """Send data to the database"""
-    with get_connection() as conn, conn.cursor() as curr:
-        logger.info("Attempting to insert with psycopg2...")
-        try:
-            for _, row in healthcare_dataframe.iterrows():
-                patient_id = patient_insertion(curr, row)
-                claim_insertion(curr, row, patient_id)
-                diagnosis_id = diagnosis_insertion(curr, row, patient_id)
-                visit_insertion(curr, row, patient_id, diagnosis_id)
-            conn.commit()
-            logger.info(
-                "Successfully wrote %s rows to Postgres.",
-                len(
-                    healthcare_dataframe
-                ),  # this is wrong, we need to track updated records
-            )
-        except Exception as e:
-            logger.error("Failed to write to Database")
-            conn.rollback()
-            raise Exception(f"Could not connect to DB for reason: {e}")
-
-
-def load_reject_data(bad_data: pd.DataFrame) -> None:
-    pass

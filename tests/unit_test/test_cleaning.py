@@ -1,7 +1,7 @@
 """ok my tests fail now, whatever fix this later"""
 
 import pandas as pd
-from src.silver_layer.clean_data import (
+from silver_layer.clean_data.clean_data import (
     standardize_names,
     standardize_bill,
     standardize_columns,
