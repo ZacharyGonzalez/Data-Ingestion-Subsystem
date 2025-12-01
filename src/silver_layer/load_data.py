@@ -7,6 +7,7 @@ import time
 import logging
 import pandas as pd
 from .db_pool import get_connection
+from logger import log_function_call
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +34,6 @@ VISIT_INSERT = """
 
 
 def patient_insertion(curr, row):
-    logger.info("Attempting patient insertion...")
     curr.execute(
         PATIENT_INSERT,
         (row["name"], row["age"], row["gender"], row["blood_type"]),
@@ -43,7 +43,6 @@ def patient_insertion(curr, row):
 
 
 def claim_insertion(curr, row, patient_id):
-    logger.info("Attempting claim insertion...")
     curr.execute(
         CLAIM_INSERT,
         (patient_id, row["insurance_provider"], row["billing_amount"]),
@@ -51,7 +50,6 @@ def claim_insertion(curr, row, patient_id):
 
 
 def diagnosis_insertion(curr, row, patient_id):
-    logger.info("Attempting diagnosis insertion...")
     curr.execute(
         DIAGNOSIS_INSERT,
         (
@@ -67,7 +65,6 @@ def diagnosis_insertion(curr, row, patient_id):
 
 
 def visit_insertion(curr, row, patient_id, diagnosis_id):
-    logger.info("Attempting visit insertion...")
     curr.execute(
         VISIT_INSERT,
         (
@@ -81,7 +78,7 @@ def visit_insertion(curr, row, patient_id, diagnosis_id):
         ),
     )
 
-
+@log_function_call
 def load_data(healthcare_dataframe: pd.DataFrame) -> None:
     """Send data to the database"""
     with get_connection() as conn, conn.cursor() as curr:

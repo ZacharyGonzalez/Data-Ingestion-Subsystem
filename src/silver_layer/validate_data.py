@@ -6,6 +6,7 @@ from typing import List, Tuple, Annotated
 from datetime import datetime
 from pydantic import BaseModel, PositiveInt, ValidationError, StringConstraints, Field
 import pandas as pd
+from logger import log_function_call
 
 
 logger = logging.getLogger(__name__)
@@ -61,7 +62,7 @@ class RawCSV(BaseModel):
         StringConstraints(min_length=3, max_length=40, pattern=r"^[A-Za-z]{1,40}$"),
     ]
 
-
+@log_function_call
 def validate_data(df: pd.DataFrame) -> Tuple[pd.DataFrame, List[dict]]:
     """Compares Dataframe to custom RawCSV pydantic class
     returns a tuple containing a dataframe and a list of dict rejects
@@ -69,7 +70,6 @@ def validate_data(df: pd.DataFrame) -> Tuple[pd.DataFrame, List[dict]]:
     valid_rows = []
     rejects = []
 
-    logger.info("Validating data...")
 
     for i, row in df.iterrows():
         try:
@@ -77,9 +77,8 @@ def validate_data(df: pd.DataFrame) -> Tuple[pd.DataFrame, List[dict]]:
             valid_rows.append(valid_row.model_dump())
         except ValidationError as e:
             rejects.append({"idx": i, "row": row.to_dict(), "error": e.errors()})
-    logger.info("Successfully validated %s rows.", len(valid_rows))
-    logger.info("Rejected %s rows.", len(rejects))
+    logger.info("--Successfully validated %s rows and rejected %s rows.", len(valid_rows), len(rejects))
     if rejects:
-        logger.warning("REJECTS:\n%s", json.dumps(rejects, indent=2))
+        logger.warning("rejected rows: %s \n",json.dumps(rejects,indent=2))
 
     return (pd.DataFrame(valid_rows), pd.DataFrame(rejects))

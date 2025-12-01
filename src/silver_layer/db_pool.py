@@ -5,6 +5,7 @@ import psycopg2
 import os
 import logging
 import time
+from logger import log_function_call
 
 logger = logging.getLogger(__name__)
 
@@ -16,6 +17,7 @@ DB_HOST = os.getenv("DB_HOST")
 DB_PORT = os.getenv("DB_PORT")
 pool = None
 
+@log_function_call
 def init_pool(retries=5, delay=3):
     global pool
     if pool is not None:
