@@ -21,6 +21,7 @@ pool = None
 def init_pool(retries=5, delay=3):
     global pool
     if pool is not None:
+        logger.info("Using already existing pool")
         return pool
     for i in range(retries):
         try:

@@ -1,6 +1,4 @@
-version: "3.9"
 services:
- 
 
   source_postgres:
     env_file: ".env"
