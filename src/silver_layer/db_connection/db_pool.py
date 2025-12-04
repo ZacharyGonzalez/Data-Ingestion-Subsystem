@@ -17,6 +17,7 @@ DB_HOST = os.getenv("DB_HOST")
 DB_PORT = os.getenv("DB_PORT")
 pool = None
 
+
 @log_function_call
 def init_pool(retries=5, delay=3):
     global pool
@@ -44,7 +45,7 @@ def init_pool(retries=5, delay=3):
 
 @contextmanager
 def get_connection():
-    pool=init_pool()
+    pool = init_pool()
     conn = pool.getconn()
     try:
         yield conn

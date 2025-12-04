@@ -4,7 +4,7 @@ import pandas as pd
 from src.readers.csv_reader import safe_read_csv
 from silver_layer.validate_data.validate_data import validate_data
 from silver_layer.load_data.load_data import get_connection
-
+from src.silver_layer.db_connection.db_pool import init_pool
 
 # The below test fails due to docker postgres container not running
 """
@@ -54,3 +54,8 @@ def test_csv_reader_bad_path():
 def test_csv_reader_valid_path():
     path = "./test.csv"
     safe_read_csv(path)
+
+
+def test_init_pool():
+    with pytest.raises(RuntimeError):
+        pool = init_pool()
