@@ -17,7 +17,7 @@ def test_standardize_names():
 
 
 def test_standardize_bill():
-    df = pd.DataFrame({"billing_amount": [100.0000000, 123.456]})
+    df = pd.DataFrame({"billing_amount": [100.00000010, 123.456]})
     df = standardize_bill(df)
     expected_bill = [100.00, 123.46]
     assert df["billing_amount"].tolist() == expected_bill

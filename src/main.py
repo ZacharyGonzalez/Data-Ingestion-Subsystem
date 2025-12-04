@@ -19,16 +19,21 @@ CHUNK_SIZE = 5000
 def main():
     """Runs the primary stages of the ETL Pipeline.
     
-    We clean the data before checking for duplicates because unstandardized names are not equal to eachother even if they are the same spelling
+    We clean the data before checking for duplicates because unstandardized names are not equal to eachother even if they are the same spelling.
+    Duplicates from chunk are checked due to its speed, but duplicate patients will be caught and handled by postgres.
     """
+
     logger = make_logger()
     for chunk in safe_read_csv(CSV_PATH, CHUNK_SIZE):
         chunk = standardize_columns(chunk)
-        valid_df, rejects_df = validate_data(chunk)
-        clean_valid_df = clean_data(valid_df)
-        if len(clean_valid_df) > 0:
-            clean_valid_df = drop_duplicates_or_na(clean_valid_df)
-            load_data(clean_valid_df)
+        try:
+            clean_df = clean_data(chunk)
+        except:
+            pass
+        valid_df, rejects_df = validate_data(clean_df)
+        if len(valid_df) > 0:
+            valid_df = drop_duplicates_or_na(valid_df)
+            load_data(valid_df)
         logger.info("\n")
 
 

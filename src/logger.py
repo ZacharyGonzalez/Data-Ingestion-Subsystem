@@ -8,7 +8,6 @@ def make_logger():
     """Makes a logger that will append to the daily log file, or else make it"""
     os.environ["TZ"] = "America/New_York"
     os.makedirs("./logs", exist_ok=True)
-    time.tzset()
     FILE_MODE = "w"
     now = datetime.now().strftime("%Y-%m-%d")
     log_filename = f"./logs/etl_{now}.log"
@@ -29,9 +28,9 @@ def make_logger():
 
 def log_function_call(func):
     def wrapper(*args, **kwargs):
-        logging.info("Calling {%s}", func.__name__)
+        logging.info("Calling {%s}.", func.__name__)
         result = func(*args, **kwargs)
-        logging.info("{%s} completed", func.__name__)
+        logging.info("{%s} completed.", func.__name__)
         return result
 
     return wrapper

@@ -41,6 +41,7 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     try:
         df = standardize_names(df)
         df = standardize_bill(df)
-    except:
+    except TypeError as e:
         logger.exception("Error on cleaning data, ensure DF is non-empty")
+        raise e
     return df if len(df) >= 0 else None
