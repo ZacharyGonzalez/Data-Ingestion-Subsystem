@@ -19,7 +19,7 @@ pool = None
 
 
 @log_function_call
-def init_pool(retries=5, delay=3):
+def init_pool(retries=1, delay=2):
     global pool
     if pool is not None:
         logger.info("Using already existing pool")

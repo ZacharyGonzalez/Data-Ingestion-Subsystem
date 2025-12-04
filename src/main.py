@@ -18,7 +18,7 @@ CHUNK_SIZE = 5000
 
 def main():
     """Runs the primary stages of the ETL Pipeline.
-    
+
     We clean the data before checking for duplicates because unstandardized names are not equal to eachother even if they are the same spelling.
     Duplicates from chunk are checked due to its speed, but duplicate patients will be caught and handled by postgres.
     """

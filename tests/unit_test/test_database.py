@@ -7,13 +7,6 @@ from silver_layer.load_data.load_data import get_connection
 from src.silver_layer.db_connection.db_pool import init_pool
 
 # The below test fails due to docker postgres container not running
-"""
-def test_psycopg2_connection():
-    with get_connection() as conn, conn.cursor() as curr:
-        curr.execute("SELECT 1")
-        result = curr.fetchone()
-        assert result[0] == 1
-"""
 
 def test_pydantic_validator_accepts():
     df = pd.DataFrame([{
@@ -59,3 +52,11 @@ def test_csv_reader_valid_path():
 def test_init_pool():
     with pytest.raises(RuntimeError):
         pool = init_pool()
+
+
+def test_psycopg2_connection():
+    with pytest.raises(Exception):
+        with get_connection() as conn, conn.cursor() as curr:
+            curr.execute("SELECT 1")
+            result = curr.fetchone()
+            assert result[0] == 1
