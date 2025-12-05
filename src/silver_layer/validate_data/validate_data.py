@@ -31,6 +31,7 @@ def validate_data(df: pd.DataFrame) -> Tuple[pd.DataFrame, List[dict]]:
         len(rejects),
     )
     if rejects:
-        logger.warning("rejected rows: %s \n", json.dumps(rejects, indent=2))
+        for reject in rejects:
+            logger.warning("rejected rows: %s", (reject["row"],reject["error"][0]["loc"],reject["error"][0]["msg"]))
 
     return (pd.DataFrame(valid_rows), pd.DataFrame(rejects))
