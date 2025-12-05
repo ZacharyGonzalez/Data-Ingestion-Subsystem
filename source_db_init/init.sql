@@ -64,13 +64,14 @@ CREATE TABLE IF NOT EXISTS diagnosis(
 CREATE TABLE IF NOT EXISTS visit(
 	visit_id SERIAL PRIMARY KEY,
 	patient_id INTEGER REFERENCES patient(patient_id) ON DELETE CASCADE,
-    diagnosis_id INTEGER REFERENCES diagnosis(diagnosis_id), /*not cascading this because a visit and patient still exist*/
+    diagnosis_id INTEGER REFERENCES diagnosis(diagnosis_id), 
 	hospital VARCHAR(50),
 	room_number SMALLINT,
 	date_of_admission DATE,
 	discharge_date DATE,
 	admission_type VARCHAR(20)
 );
+
 CREATE TABLE IF NOT EXISTS claim(
     claim_id SERIAL PRIMARY KEY,
     patient_id INTEGER REFERENCES patient(patient_id) ON DELETE CASCADE,
