@@ -1,39 +1,44 @@
 import pytest
-import psycopg2
 import pandas as pd
-from src.readers.csv_reader import safe_read_csv
+from src.bronze_layer.csv_reader import safe_read_csv
 from silver_layer.validate_data.validate_data import validate_data
-from silver_layer.load_data.load_data import get_connection
-from src.silver_layer.db_connection.db_pool import init_pool
+from src.gold_layer.load_data.load_data import get_connection
+from src.db_connection.db_pool import init_pool
 
 # The below test fails due to docker postgres container not running
 
+
 def test_pydantic_validator_accepts():
-    df = pd.DataFrame([{
-        "name": "ChRIstY CAmPBElL",
-        "age": 84,
-        "gender": "Male",
-        "blood_type": "A+",
-        "medical_condition": "Obesity",
-        "date_of_admission": "2022-07-25",
-        "doctor": "Tonya Harmon",
-        "hospital": "Hall Mason and Clark,",
-        "insurance_provider": "Cigna",
-        "billing_amount": 14800.021664611051,
-        "room_number": 263,
-        "admission_type": "Urgent",
-        "discharge_date": "2022-08-07",
-        "medication": "Penicillin",
-        "test_results": "Abnormal",
-    }])
+    df = pd.DataFrame(
+        [
+            {
+                "name": "ChRIstY CAmPBElL",
+                "age": 84,
+                "gender": "Male",
+                "blood_type": "A+",
+                "medical_condition": "Obesity",
+                "date_of_admission": "2022-07-25",
+                "doctor": "Tonya Harmon",
+                "hospital": "Hall Mason and Clark,",
+                "insurance_provider": "Cigna",
+                "billing_amount": 14800.021664611051,
+                "room_number": 263,
+                "admission_type": "Urgent",
+                "discharge_date": "2022-08-07",
+                "medication": "Penicillin",
+                "test_results": "Abnormal",
+            }
+        ]
+    )
 
     valid, rejects = validate_data(df)
     assert len(valid.any()) > 0
 
+
 def test_pydantic_validator_rejects():
     df = pd.DataFrame({"name": ["AliCe BRAIN", 1]})
     valid, rejects = validate_data(df)
-    assert len(rejects) > 0 
+    assert len(rejects) > 0
 
 
 def test_csv_reader_bad_path():

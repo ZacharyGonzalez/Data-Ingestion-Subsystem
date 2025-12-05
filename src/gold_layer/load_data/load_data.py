@@ -6,7 +6,7 @@ TODO Deletion of a visit should get rid of the diagnosis
 import time
 import logging
 import pandas as pd
-from ..db_connection.db_pool import get_connection
+from db_connection.db_pool import get_connection
 from logger import log_function_call
 from .insertions.insertions import (
     claim_insertion,

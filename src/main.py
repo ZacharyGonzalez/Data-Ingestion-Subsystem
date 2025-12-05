@@ -2,8 +2,8 @@
 Main module to start the ETL Pipeline
 """
 
-from readers.csv_reader import safe_read_csv
-from silver_layer.load_data.load_data import load_data
+from bronze_layer.csv_reader import safe_read_csv
+from gold_layer.load_data.load_data import load_data
 from silver_layer.validate_data.validate_data import validate_data
 from logger import make_logger
 from silver_layer.clean_data.clean_data import (
