@@ -28,8 +28,8 @@ def main():
         chunk = standardize_columns(chunk)
         try:
             clean_df = clean_data(chunk)
-        except:
-            pass
+        except Exception as e:
+            logger.debug(e)
         valid_df, rejects_df = validate_data(clean_df)
         if len(valid_df) > 0:
             valid_df = drop_duplicates_or_na(valid_df)

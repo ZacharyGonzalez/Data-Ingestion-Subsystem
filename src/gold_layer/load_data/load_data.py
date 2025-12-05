@@ -3,7 +3,6 @@
 TODO Deletion of a visit should get rid of the diagnosis
 """
 
-import time
 import logging
 import pandas as pd
 from db_connection.db_pool import get_connection
