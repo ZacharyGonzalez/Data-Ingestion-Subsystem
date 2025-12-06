@@ -33,7 +33,8 @@ def main():
         valid_df, rejects_df = validate_data(clean_df)
         if len(valid_df) > 0:
             valid_df = drop_duplicates_or_na(valid_df)
-            load_data(valid_df)
+            inserted,updated = load_data(valid_df)
+            logger.info("Inserted {%s} row's and updated {%s} row's.",inserted,updated)
         logger.info("\n")
 
 
