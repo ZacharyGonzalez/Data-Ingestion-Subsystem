@@ -14,7 +14,7 @@ def top_conditions(limit=10):
 
 def avg_billing_by_insurance():
     sql = """
-        SELECT insurance_provider, AVG(billing_amount) AS avg_bill
+        SELECT insurance_provider, ROUND(AVG(billing_amount),2) AS avg_bill
         FROM claim
         GROUP BY insurance_provider;
     """
