@@ -2,6 +2,7 @@ import logging
 import os
 import time
 from datetime import datetime
+import pandas as pd
 
 
 def make_logger():
@@ -28,19 +29,15 @@ def make_logger():
 
 def log_function_call(func):
     def wrapper(*args, **kwargs):
-        logging.info("Calling {%s}.", func.__name__)
-        result = func(*args, **kwargs)
-        logging.info("{%s} completed.", func.__name__)
-        return result
-
-    return wrapper
-
-
-def log_function_call_with_params(func):
-    def wrapper(*args, **kwargs):
-        logging.info(
-            "Calling {%s} with args {%s} and kwargs {%s}", func.__name__, args, kwargs
-        )
+        if len(args)> 0 and isinstance(args[0],pd.DataFrame):
+            logging.info("Calling {%s}.", func.__name__)
+        else:
+            logging.info(
+                "Calling {%s} with args {%s} and kwargs {%s}",
+                func.__name__,
+                args,
+                kwargs,
+            )
         result = func(*args, **kwargs)
         logging.info("{%s} completed", func.__name__)
         return result

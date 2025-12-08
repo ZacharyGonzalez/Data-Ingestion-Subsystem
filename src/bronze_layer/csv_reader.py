@@ -1,11 +1,11 @@
 import logging
 import pandas as pd
-from logger import log_function_call_with_params
+from logger import log_function_call
 
 logger = logging.getLogger(__name__)
 
 
-@log_function_call_with_params
+@log_function_call
 def safe_read_csv(path: str, chunk_size: int = 5000):
     """Safe CSV reader that yields chunks."""
     logger.info("Reading data from %s.", path)

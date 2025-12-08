@@ -26,7 +26,7 @@ def standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
     """snake_case all column names"""
     df.columns = (
         df.columns.str.strip().str.lower().str.replace(" ", "_")
-    )  # I should break this apart into a for loop so others can read it better
+    )
     return df
 
 
@@ -34,18 +34,24 @@ def standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
 def drop_duplicates_or_na(healthcare_dataframe: pd.DataFrame) -> pd.DataFrame:
     """This function will only fail if the dataframe is None or completely empty"""
     df = healthcare_dataframe.drop_duplicates()
-    num_duplicates = len(df) - len(df.drop_duplicates())
+    num_duplicates = df.duplicated().sum()
     logger.info("removed %s duplicates from current chunk", num_duplicates)
     df = df.dropna()
     return df
 
 
+@log_function_call
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     """Use all forms of implemented standardization to clean the data"""
     try:
         df = standardize_names(df)
+    except TypeError as e:
+        logger.exception("Error on standardizing names %s", e)
+        raise e
+
+    try:
         df = standardize_bill(df)
     except TypeError as e:
-        logger.exception("Error on cleaning data %s", e)
+        logger.exception("Error on standardizing bills %s", e)
         # Willing to continue on bad clean since the validator will handle the rest
     return df

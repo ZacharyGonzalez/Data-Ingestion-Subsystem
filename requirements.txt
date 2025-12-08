@@ -3,4 +3,3 @@ python-dotenv
 pytest
 pydantic
 psycopg2-binary
-seaborn
