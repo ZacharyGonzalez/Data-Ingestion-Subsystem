@@ -1,6 +1,4 @@
 """Sends data to the postgres container
-
-TODO Deletion of a visit should get rid of the diagnosis
 """
 
 import time

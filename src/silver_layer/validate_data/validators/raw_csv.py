@@ -16,7 +16,7 @@ class RawCSV(BaseModel):
     ]
     blood_type: Annotated[
         str,
-        StringConstraints(pattern=r"[A][+-]|[B][+-]|[AB][+-]|[O][+-]"),
+        StringConstraints(pattern=r"^[A][+-]|^[B][+-]|^[A][B][+-]|^[O][+-]"),
     ]
     medical_condition: Annotated[
         str,

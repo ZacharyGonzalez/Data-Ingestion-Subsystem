@@ -26,10 +26,10 @@ def init_pool(retries=1, delay=2):
         return pool
     for i in range(retries):
         try:
-            logger.info("Trying to initialize connection (%s/%s)", i + 1, retries)
+            logger.info("Trying to initialize connection (%s/%s)", i + 1, retries) 
             pool = SimpleConnectionPool(
                 minconn=1,
-                maxconn=1,
+                maxconn=1, # Should i have more connections.
                 database=DATABASE,
                 user=DB_USER,
                 password=DB_PASS,
