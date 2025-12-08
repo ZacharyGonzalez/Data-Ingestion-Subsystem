@@ -6,17 +6,20 @@ from logger import log_function_call
 
 logger = logging.getLogger(__name__)
 
+
 @log_function_call
 def standardize_names(df: pd.DataFrame) -> pd.DataFrame:
     """Properly Capitalizes Names"""
     df["name"] = df["name"].str.title()
     return df
 
+
 @log_function_call
 def standardize_bill(df: pd.DataFrame) -> pd.DataFrame:
     """Round bills to the nearest cent at 2 points of precision"""
     df["billing_amount"] = df["billing_amount"].round(2)
     return df
+
 
 @log_function_call
 def standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
@@ -25,6 +28,7 @@ def standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
         df.columns.str.strip().str.lower().str.replace(" ", "_")
     )  # I should break this apart into a for loop so others can read it better
     return df
+
 
 @log_function_call
 def drop_duplicates_or_na(healthcare_dataframe: pd.DataFrame) -> pd.DataFrame:
@@ -42,6 +46,6 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
         df = standardize_names(df)
         df = standardize_bill(df)
     except TypeError as e:
-        logger.exception("Error on cleaning data, ensure DF is non-empty")
-        raise e
-    return df if len(df) >= 0 else None
+        logger.exception("Error on cleaning data %s", e)
+        # Willing to continue on bad clean since the validator will handle the rest
+    return df

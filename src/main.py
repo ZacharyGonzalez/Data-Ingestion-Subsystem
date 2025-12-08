@@ -11,6 +11,11 @@ from silver_layer.clean_data.clean_data import (
     drop_duplicates_or_na,
     standardize_columns,
 )
+from gold_layer.analytics.queries import (
+    top_conditions,
+    avg_billing_by_insurance,
+    patient_count_by_gender,
+)
 
 CSV_PATH = "./data/output_shuffled.csv"
 CHUNK_SIZE = 5000
@@ -26,15 +31,18 @@ def main():
     logger = make_logger()
     for chunk in safe_read_csv(CSV_PATH, CHUNK_SIZE):
         chunk = standardize_columns(chunk)
-        try:
-            clean_df = clean_data(chunk)
-        except:
-            pass
+        clean_df = clean_data(chunk)
         valid_df, rejects_df = validate_data(clean_df)
         if len(valid_df) > 0:
             valid_df = drop_duplicates_or_na(valid_df)
-            load_data(valid_df)
-        logger.info("\n")
+            inserted, updated = load_data(valid_df)
+            logger.info(
+                "Inserted {%s} row's and updated {%s} row's.", inserted, updated
+            )
+    logger.info("\n")
+    logger.info("Top diagnoses:\n%s", top_conditions())
+    logger.info("Average billing by provider:\n%s", avg_billing_by_insurance())
+    logger.info("Patient demographics:\n%s", patient_count_by_gender())
 
 
 if __name__ == "__main__":

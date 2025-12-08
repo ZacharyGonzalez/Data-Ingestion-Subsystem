@@ -1,50 +1,56 @@
 # Data Ingestion SubSystem
 
-This project aims to implement an ETL pipeline, from csv to relational database, and then present actionable/interesting results.
+A containerized ETL platform engineered to ingest raw healthcare CSVs, validate and clean the data, and load it into a fully normalized PostgreSQL database.  
+The workflow aligns with the **Medallion Architecture (Bronze → Silver → Gold)**:
+
+- **Bronze:** Raw CSV ingestion (chunked to simulate large-scale datasets).  
+- **Silver:** Data cleaning, deduplication, and Pydantic-based validation.  
+- **Gold:** Normalized tables loaded via `psycopg2` connection pooling.
+
+All components run inside Docker, ensuring an isolated, reproducible, and environment-agnostic deployment.  
+The final state provides a structured operational datastore ready for **Power BI analytics and reporting**.
+
 
 ## How to setup
 
-Go to the root directory, fill out the .env with your postgres db and pgadmin info (check dotenv_template for format, the pgadmin info will be used to set the new connection to the DB) and then run:
+1. Navigate to the project root directory.
+2. Fill out the `.env` file with Postgres and pgAdmin credentials (use `dotenv_template` as a reference).  
+3. Start the environment by running:
+
     ```docker compose up --build```
 
 To access pgadmin4, go to localhost:5050, login with details added to the .env and follow the steps below.
 
-**Step 1: Add new server**
+## Accessing pgAdmin4
 
-Left sidebar → **Servers (right-click)** → **Register → Server**
+Open your browser and go to:
+[http://localhost:5050](http://localhost:5050)
 
-**Step 2: General tab**
+Log in with the credentials from your .env, then:
+
+### Step 1: Register a New Server
+
+Left sidebar → Servers (right-click) → Register → Server
+
+### Step 2: General tab
+
 - **Name:** `source_postgres`
-    
-**Step 3: Connection tab**
 
-Fill in:
+### Step 3: Connection tab
+
 - **Host:** `source_postgres`  
     (use the _container name_, not localhost)
-
 - **Port:** `5432`
-
 - **Username:** `postgres`
-    
 - **Password:** `secret`
-    
 - Save password: **✔**
-  
-  
+
 ## How This project works
 
-Docker is used to host the postgres server, with psycopg2 acting as the driver to connect with it.
-
-Docker also hosts pgadmin4 which when connected to the database allows for monitoring and querying of the data and can show the ERD.
-
-## Drop Duplicates or NA
-
-By checking for collisions on insert of a row, we can detect duplicate entries and avoid costly transactions.
-
-Per chunk checking for duplicates also removes the occasional duplicate as well.
-
-The entire dataset is chunked and then validated by Pydantic before moving through to cleaning.
-
-## The dataset
-
-Sparks could be used but seeing as to how the CSV fits into memory comfortably, we only chunk it with pandas for practice working with partitioned data.
+- PostgreSQL runs inside Docker as the primary data store.
+- The ETL application connects via psycopg2 using connection pools for efficient batch inserts.
+- pgAdmin4 provides dashboarding, SQL execution, and ERD visualization.
+- This architecture delivers:
+  - A deterministic environment
+  - Clean separation of services
+  - Simplified onboarding and operational consistency
