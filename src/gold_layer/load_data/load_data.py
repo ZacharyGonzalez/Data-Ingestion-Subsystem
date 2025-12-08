@@ -1,5 +1,4 @@
-"""Sends data to the postgres container
-"""
+"""Sends data to the postgres container"""
 
 import logging
 import pandas as pd
@@ -33,16 +32,14 @@ def load_data(healthcare_dataframe: pd.DataFrame):  # TODO add functions return 
                     update_count += 1
             conn.commit()
             logger.info(
-                "Successfully wrote %s rows to Postgres.",
-                len(
-                    healthcare_dataframe
-                ),  # this is wrong, we need to track updated records
+                "Successfully wrote %s rows to Postgres and updated %s rows.",
+                insert_count,
+                update_count,
             )
         except Exception as e:
             logger.error("Failed to write to Database")
             conn.rollback()
             raise Exception(f"Could not connect to DB for reason: {e}")
-    return (insert_count, update_count)
 
 
 def load_reject_data(bad_data: pd.DataFrame) -> None:
