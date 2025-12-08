@@ -54,15 +54,14 @@ def test_csv_reader_valid_path():
     safe_read_csv(path)
 
 
-def test_init_pool():
+def test_init_pool_fails():
     with pytest.raises(RuntimeError):
         pool = init_pool()
-"""
 
-def test_psycopg2_connection():
+
+def test_psycopg2_connection_fails():
     with pytest.raises(Exception):
         with get_connection() as conn, conn.cursor() as curr:
             curr.execute("SELECT 1")
             result = curr.fetchone()
             assert result[0] == 1
-"""

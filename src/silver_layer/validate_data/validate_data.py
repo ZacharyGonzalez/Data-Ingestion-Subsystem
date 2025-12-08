@@ -32,6 +32,14 @@ def validate_data(df: pd.DataFrame) -> Tuple[pd.DataFrame, List[dict]]:
     )
     if rejects:
         for reject in rejects:
-            logger.warning("rejected rows: %s", (reject["row"],reject["error"][0]["loc"],reject["error"][0]["msg"]))
+            rejected_row = (
+                reject["row"],
+                reject["error"][0]["loc"],
+                reject["error"][0]["msg"],
+            )
+            logger.warning(
+                "rejected rows: %s",
+                rejected_row,
+            )
 
     return (pd.DataFrame(valid_rows), pd.DataFrame(rejects))

@@ -29,17 +29,17 @@ def make_logger():
 
 def log_function_call(func):
     def wrapper(*args, **kwargs):
-        if len(args)> 0 and isinstance(args[0],pd.DataFrame):
+        if len(args) > 0 and isinstance(args[0], pd.DataFrame):
             logging.info("Calling {%s}.", func.__name__)
         else:
             logging.info(
-                "Calling {%s} with args {%s} and kwargs {%s}",
+                "Calling {%s} with args {%s} and kwargs {%s}.",
                 func.__name__,
                 args,
                 kwargs,
             )
         result = func(*args, **kwargs)
-        logging.info("{%s} completed", func.__name__)
+        logging.info("{%s} completed!", func.__name__)
         return result
 
     return wrapper
