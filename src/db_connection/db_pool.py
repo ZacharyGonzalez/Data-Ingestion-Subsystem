@@ -1,3 +1,6 @@
+"""
+These funcitons could have been made into a custom class to simplify the process.
+"""
 from psycopg2.pool import SimpleConnectionPool
 from contextlib import contextmanager
 from dotenv import load_dotenv
@@ -45,7 +48,7 @@ def init_pool(retries=5, delay=3):
 
 @contextmanager
 def get_connection():
-    pool = init_pool()
+    pool = init_pool() # returns instance if possible
     conn = pool.getconn()
     try:
         yield conn

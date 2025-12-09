@@ -1,9 +1,9 @@
 import pytest
 import pandas as pd
-from src.bronze_layer.csv_reader import safe_read_csv
+from bronze_layer.csv_reader import safe_read_csv
 from silver_layer.validate_data.validate_data import validate_data
-from src.gold_layer.load_data.load_data import get_connection
-from src.db_connection.db_pool import init_pool
+from gold_layer.load_data.load_data import get_connection
+from db_connection.db_pool import init_pool
 
 # The below test fails due to docker postgres container not running
 

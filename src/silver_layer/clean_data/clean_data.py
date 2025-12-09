@@ -40,7 +40,7 @@ def drop_duplicates_or_na(healthcare_dataframe: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-@log_function_call # i hate this function
+@log_function_call
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     """Use all forms of implemented standardization to clean the data"""
     try:

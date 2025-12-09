@@ -1,0 +1,6 @@
+[project]
+name = "data_ingestion_subsystem"
+version = "0.1.0"
+
+[tool.setuptools]
+packages = { find = { where = ["src"] } } #Assisted by chatgpt for pytest issues
