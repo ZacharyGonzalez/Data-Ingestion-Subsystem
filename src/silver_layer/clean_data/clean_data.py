@@ -29,6 +29,12 @@ def standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
     )
     return df
 
+@log_function_call
+def standardize_strings(df:pd.DataFrame) -> pd.DataFrame:
+    string_columns = df.select_dtypes(include=['object', 'string']).columns
+    for column in string_columns:
+        df[column] = df[column].str.strip().str.lower().str.replace(",","")
+    return df
 
 @log_function_call
 def drop_duplicates_or_na(healthcare_dataframe: pd.DataFrame) -> pd.DataFrame:
@@ -43,6 +49,7 @@ def drop_duplicates_or_na(healthcare_dataframe: pd.DataFrame) -> pd.DataFrame:
 @log_function_call
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     """Use all forms of implemented standardization to clean the data"""
+     
     try:
         df = standardize_names(df)
     except TypeError as e:
@@ -54,4 +61,6 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     except TypeError as e:
         logger.exception("Error on standardizing bills %s", e)
         # Willing to continue on bad clean since the validator will handle the rest
+        
+    
     return df

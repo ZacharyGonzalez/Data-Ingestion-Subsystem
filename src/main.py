@@ -37,10 +37,11 @@ def main():
             valid_df = drop_duplicates_or_na(valid_df)
             load_data(valid_df)
     logger.info("\n")
+    """
     logger.info("Top diagnoses:\n%s", top_conditions())
     logger.info("Average billing by provider:\n%s", avg_billing_by_insurance())
     logger.info("Patient demographics:\n%s", patient_count_by_gender())
-
+    """
 
 if __name__ == "__main__":
     main()

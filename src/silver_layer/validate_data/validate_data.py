@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_function_call
-def validate_data(df: pd.DataFrame) -> Tuple[pd.DataFrame, List[dict]]:
+def validate_data(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Compares Dataframe to custom RawCSV pydantic class
     returns a tuple containing a dataframe and a list of dict rejects
     """
