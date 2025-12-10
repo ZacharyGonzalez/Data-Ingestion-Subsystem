@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_function_call
-def load_data(healthcare_dataframe: pd.DataFrame):  # TODO add functions return type
+def load_data(healthcare_dataframe: pd.DataFrame)-> None:
     """Send data to the database"""
     with get_connection() as conn, conn.cursor() as curr:
         insert_count, update_count = 0, 0

@@ -54,3 +54,8 @@ Left sidebar → Servers (right-click) → Register → Server
   - A deterministic environment
   - Clean separation of services
   - Simplified onboarding and operational consistency
+
+
+## To run the tests
+- Run `pip install -e .`
+- Then run `pytest` in the cli

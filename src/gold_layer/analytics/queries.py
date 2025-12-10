@@ -1,3 +1,8 @@
+"""
+These queries are here for genneral queries to show i can access and get some kind of info from the DB
+"""
+
+
 import pandas as pd
 from db_connection.db_pool import get_connection
 
